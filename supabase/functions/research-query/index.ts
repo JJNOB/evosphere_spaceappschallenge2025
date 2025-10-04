@@ -125,12 +125,11 @@ Available sections:
    - Maintainability concerns
    Source: Methods + Discussion
 
-6. **SOURCES & DATA ACCESS** - ALWAYS REQUIRED - Transparency and traceability:
-   - Core papers with full citations
-   - Available datasets (OSDR, NASA Task Book, SLS Library)
-   - Grant information when available
-   - Links to primary data sources
-    Source: References + Metadata
+6. **SOURCES & DATA ACCESS** - ALWAYS REQUIRED - List only:
+   - Paper title
+   - Authors
+   - Direct link/URL to the paper
+   Source: References + Metadata
 
 7. **ENGINEERING & SYSTEMS INTEGRATION** - OPTIONAL - Include only if query asks for engineering/integration requirements:
    - Derived requirements with "shall/should" statements
