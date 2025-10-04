@@ -56,11 +56,36 @@ Research Paper Content:
 ${RESEARCH_CONTENT}
 
 CRITICAL INSTRUCTIONS - QUERY-ADAPTIVE RESPONSE:
-Analyze the query and ONLY populate sections that are DIRECTLY RELEVANT to answering it.
-- ALWAYS include: SUMMARY and SOURCES & DATA ACCESS
-- ONLY include other sections if they contain substantial, relevant information for the query
-- For narrow/specific queries: focus on 1-3 relevant sections
-- For broad queries: include all applicable sections
+
+Analyze the query intent and populate sections according to these rules:
+
+**ALWAYS REQUIRED:**
+- SUMMARY (General Scope)
+- SOURCES & DATA ACCESS
+
+**DECISION RULES BY QUERY TYPE:**
+
+1. **Research Queries** (asking about studies, findings, experiments, biological effects):
+   - Include: KEY FINDINGS / CONCLUSIONS
+   - Include: TECHNOLOGY & OPERATIONAL IMPLICATIONS
+   - Include: TECHNOLOGY LIMITATIONS
+   - Include: UNCERTAINTIES & CONFLICTS (if comprehensive understanding needed)
+
+2. **Technology Queries** (asking about hardware, systems, TRL, countermeasures, operations):
+   - Include: TECHNOLOGY & OPERATIONAL IMPLICATIONS
+   - Include: TECHNOLOGY LIMITATIONS
+   - Include: ENGINEERING & SYSTEMS INTEGRATION (if asking about requirements, specs, integration)
+
+3. **Gap/Uncertainty Queries** (asking about unknowns, conflicts, what's missing, open questions):
+   - Include: UNCERTAINTIES & CONFLICTS
+   - Include: KEY FINDINGS (for context on what IS known)
+
+4. **Engineering/Requirements Queries** (asking about requirements, interfaces, specifications, systems):
+   - Include: ENGINEERING & SYSTEMS INTEGRATION
+   - Include: TECHNOLOGY & OPERATIONAL IMPLICATIONS
+   - Include: TECHNOLOGY LIMITATIONS
+
+**General Principle:** Be precise and comprehensive for the query's intent. Don't include sections that don't add value to answering the specific question.
 
 Available sections:
 
