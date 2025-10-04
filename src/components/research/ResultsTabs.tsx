@@ -24,6 +24,13 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
   const personaLabel = result?.persona ? personaConfig[result.persona].label : 'Unknown';
   const personaColor = result?.persona ? personaConfig[result.persona].color : 'bg-gray-500';
 
+  // Determine which tabs to show based on available content
+  const hasFindings = result?.keyFindings;
+  const hasUncertainties = result?.uncertaintiesAndConflicts;
+  const hasTechnology = result?.technologyAndOperationalImplications;
+  const hasLimitations = result?.technologyLimitations;
+  const hasEngineering = result?.persona === 'engineering' && result?.engineeringAndSystemsIntegration;
+
   const handleDownloadCSV = () => {
     if (!result) return;
     
@@ -57,34 +64,38 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
           <TabsTrigger value="summary" className={styles.tabTrigger}>
             Summary
           </TabsTrigger>
-          <TabsTrigger 
-            value="findings" 
-            disabled={!hasResults}
-            className={styles.tabTrigger}
-          >
-            Key Findings
-          </TabsTrigger>
-          <TabsTrigger 
-            value="uncertainties" 
-            disabled={!hasResults}
-            className={styles.tabTrigger}
-          >
-            Uncertainties
-          </TabsTrigger>
-          <TabsTrigger 
-            value="technology" 
-            disabled={!hasResults}
-            className={styles.tabTrigger}
-          >
-            Technology
-          </TabsTrigger>
-          <TabsTrigger 
-            value="limitations" 
-            disabled={!hasResults}
-            className={styles.tabTrigger}
-          >
-            Limitations
-          </TabsTrigger>
+          {hasFindings && (
+            <TabsTrigger 
+              value="findings" 
+              className={styles.tabTrigger}
+            >
+              Key Findings
+            </TabsTrigger>
+          )}
+          {hasUncertainties && (
+            <TabsTrigger 
+              value="uncertainties" 
+              className={styles.tabTrigger}
+            >
+              Uncertainties
+            </TabsTrigger>
+          )}
+          {hasTechnology && (
+            <TabsTrigger 
+              value="technology" 
+              className={styles.tabTrigger}
+            >
+              Technology
+            </TabsTrigger>
+          )}
+          {hasLimitations && (
+            <TabsTrigger 
+              value="limitations" 
+              className={styles.tabTrigger}
+            >
+              Limitations
+            </TabsTrigger>
+          )}
           <TabsTrigger 
             value="sources" 
             disabled={!hasResults}
@@ -92,10 +103,9 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
           >
             Sources
           </TabsTrigger>
-          {result?.persona === 'engineering' && (
+          {hasEngineering && (
             <TabsTrigger 
               value="engineering" 
-              disabled={!hasResults}
               className={styles.tabTrigger}
             >
               Engineering
@@ -129,95 +139,77 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
           </Card>
         </TabsContent>
         
-        <TabsContent value="findings" className={styles.tabContent}>
-          <Card className={styles.card}>
-            <div className={styles.cardInner}>
-              <div className={`${styles.icon} ${styles.iconSuccess}`}>
-                <TrendingUp className={styles.iconSize} />
-              </div>
-              <div className={styles.content}>
-                <h3 className={styles.heading}>Key Findings & Conclusions</h3>
-                {result ? (
+        {hasFindings && (
+          <TabsContent value="findings" className={styles.tabContent}>
+            <Card className={styles.card}>
+              <div className={styles.cardInner}>
+                <div className={`${styles.icon} ${styles.iconSuccess}`}>
+                  <TrendingUp className={styles.iconSize} />
+                </div>
+                <div className={styles.content}>
+                  <h3 className={styles.heading}>Key Findings & Conclusions</h3>
                   <div className={styles.prose}>
                     <ReactMarkdown>{result.keyFindings}</ReactMarkdown>
                   </div>
-                ) : (
-                  <p className={styles.placeholder}>
-                    Discover main proven results, mechanisms, and validated countermeasures.
-                  </p>
-                )}
+                </div>
               </div>
-            </div>
-          </Card>
-        </TabsContent>
+            </Card>
+          </TabsContent>
+        )}
         
-        <TabsContent value="uncertainties" className={styles.tabContent}>
-          <Card className={styles.card}>
-            <div className={styles.cardInner}>
-              <div className={`${styles.icon} ${styles.iconWarning}`}>
-                <BarChart3 className={styles.iconSize} />
-              </div>
-              <div className={styles.content}>
-                <h3 className={styles.heading}>Uncertainties & Conflicts</h3>
-                {result ? (
+        {hasUncertainties && (
+          <TabsContent value="uncertainties" className={styles.tabContent}>
+            <Card className={styles.card}>
+              <div className={styles.cardInner}>
+                <div className={`${styles.icon} ${styles.iconWarning}`}>
+                  <BarChart3 className={styles.iconSize} />
+                </div>
+                <div className={styles.content}>
+                  <h3 className={styles.heading}>Uncertainties & Conflicts</h3>
                   <div className={styles.prose}>
-                    <ReactMarkdown>
-                      {result.uncertaintiesAndConflicts || "No significant uncertainties or conflicts identified."}
-                    </ReactMarkdown>
+                    <ReactMarkdown>{result.uncertaintiesAndConflicts!}</ReactMarkdown>
                   </div>
-                ) : (
-                  <p className={styles.placeholder}>
-                    Identify gaps, disagreements, and areas requiring further research.
-                  </p>
-                )}
+                </div>
               </div>
-            </div>
-          </Card>
-        </TabsContent>
+            </Card>
+          </TabsContent>
+        )}
         
-        <TabsContent value="technology" className={styles.tabContent}>
-          <Card className={styles.card}>
-            <div className={styles.cardInner}>
-              <div className={`${styles.icon} ${styles.iconInfo}`}>
-                <Wrench className={styles.iconSize} />
-              </div>
-              <div className={styles.content}>
-                <h3 className={styles.heading}>Technology & Operational Implications</h3>
-                {result ? (
+        {hasTechnology && (
+          <TabsContent value="technology" className={styles.tabContent}>
+            <Card className={styles.card}>
+              <div className={styles.cardInner}>
+                <div className={`${styles.icon} ${styles.iconInfo}`}>
+                  <Wrench className={styles.iconSize} />
+                </div>
+                <div className={styles.content}>
+                  <h3 className={styles.heading}>Technology & Operational Implications</h3>
                   <div className={styles.prose}>
-                    <ReactMarkdown>{result.technologyAndOperationalImplications}</ReactMarkdown>
+                    <ReactMarkdown>{result.technologyAndOperationalImplications!}</ReactMarkdown>
                   </div>
-                ) : (
-                  <p className={styles.placeholder}>
-                    Learn about hardware, countermeasures, TRL levels, and operational impacts.
-                  </p>
-                )}
+                </div>
               </div>
-            </div>
-          </Card>
-        </TabsContent>
+            </Card>
+          </TabsContent>
+        )}
         
-        <TabsContent value="limitations" className={styles.tabContent}>
-          <Card className={styles.card}>
-            <div className={styles.cardInner}>
-              <div className={`${styles.icon} ${styles.iconWarning}`}>
-                <BarChart3 className={styles.iconSize} />
-              </div>
-              <div className={styles.content}>
-                <h3 className={styles.heading}>Technology Limitations</h3>
-                {result ? (
+        {hasLimitations && (
+          <TabsContent value="limitations" className={styles.tabContent}>
+            <Card className={styles.card}>
+              <div className={styles.cardInner}>
+                <div className={`${styles.icon} ${styles.iconWarning}`}>
+                  <BarChart3 className={styles.iconSize} />
+                </div>
+                <div className={styles.content}>
+                  <h3 className={styles.heading}>Technology Limitations</h3>
                   <div className={styles.prose}>
-                    <ReactMarkdown>{result.technologyLimitations}</ReactMarkdown>
+                    <ReactMarkdown>{result.technologyLimitations!}</ReactMarkdown>
                   </div>
-                ) : (
-                  <p className={styles.placeholder}>
-                    Understand hardware constraints, sample handling issues, and scalability gaps.
-                  </p>
-                )}
+                </div>
               </div>
-            </div>
-          </Card>
-        </TabsContent>
+            </Card>
+          </TabsContent>
+        )}
         
         <TabsContent value="sources" className={styles.tabContent}>
           <Card className={styles.card}>
@@ -277,7 +269,7 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
           </Card>
         </TabsContent>
 
-        {result?.persona === 'engineering' && result.engineeringAndSystemsIntegration && (
+        {hasEngineering && (
           <TabsContent value="engineering" className={styles.tabContent}>
             <Card className={styles.card}>
               <div className={styles.cardInner}>
@@ -287,7 +279,7 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
                 <div className={styles.content}>
                   <h3 className={styles.heading}>Engineering & Systems Integration</h3>
                   <div className={styles.prose}>
-                    <ReactMarkdown>{result.engineeringAndSystemsIntegration}</ReactMarkdown>
+                    <ReactMarkdown>{result.engineeringAndSystemsIntegration!}</ReactMarkdown>
                   </div>
                 </div>
               </div>

@@ -126,9 +126,16 @@ ${RESEARCH_CONTENT}
 
 DETECTED USER PERSONA: ${persona}
 
-CRITICAL INSTRUCTIONS - Structure your response according to these sections:
+CRITICAL INSTRUCTIONS - QUERY-ADAPTIVE RESPONSE:
+Analyze the query and ONLY populate sections that are DIRECTLY RELEVANT to answering it.
+- ALWAYS include: SUMMARY and SOURCES & DATA ACCESS
+- ONLY include other sections if they contain substantial, relevant information for the query
+- For narrow/specific queries: focus on 1-3 relevant sections
+- For broad queries: include all applicable sections
 
-1. **SUMMARY (General Scope)** - Set context and overview:
+Available sections:
+
+1. **SUMMARY (General Scope)** - ALWAYS REQUIRED - Set context and overview:
    - WHY IT MATTERS: Relevance to Moon/Mars exploration and long-duration spaceflight
    - RESEARCH LANDSCAPE: Number and types of studies (human, animal, plant, microbe)
    - PLATFORMS & METHODS: ISS, Space Shuttle, biosatellites, ground analogs, parabolic flights
@@ -136,35 +143,35 @@ CRITICAL INSTRUCTIONS - Structure your response according to these sections:
    - KEY RISKS & SYSTEMS: Biological systems affected and primary risks identified
    Source: Introduction + Abstract
 
-2. **KEY FINDINGS / CONCLUSIONS** - Main proven results:
+2. **KEY FINDINGS / CONCLUSIONS** - OPTIONAL - Include only if query asks about results/findings:
    - 3-7 findings with quantitative data when possible
    - Mechanisms and pathways discovered
    - Validated countermeasures or tested solutions
    - Include representative references
    Source: Results + Conclusions
 
-3. **UNCERTAINTIES & CONFLICTS** - Gaps and disagreements:
+3. **UNCERTAINTIES & CONFLICTS** - OPTIONAL - Include only if query asks about gaps/conflicts/unknowns:
    - Conflicting results between studies
    - Reasons for conflicts (species differences, duration, hardware variations)
    - Data shortages and areas with low confidence
    - Open questions requiring further research
    Source: Discussion + Conclusions
 
-4. **TECHNOLOGY & OPERATIONAL IMPLICATIONS** - Mission planning connections:
+4. **TECHNOLOGY & OPERATIONAL IMPLICATIONS** - OPTIONAL - Include only if query asks about tech/operations/TRL/missions:
    - Existing flight and ground hardware used
    - Environmental conditions studied
    - Countermeasures and their Technology Readiness Level (TRL)
    - Operational impacts on missions
    Source: Conclusions + Methods
 
-5. **TECHNOLOGY LIMITATIONS** - Hardware/method constraints:
+5. **TECHNOLOGY LIMITATIONS** - OPTIONAL - Include only if query asks about limitations/constraints/problems:
    - Hardware and environment constraints
    - Sample handling and data collection issues
    - Scalability and integration gaps
    - Maintainability concerns
    Source: Methods + Discussion
 
-6. **SOURCES & DATA ACCESS** - Transparency and traceability:
+6. **SOURCES & DATA ACCESS** - ALWAYS REQUIRED - Transparency and traceability:
    - Core papers with full citations
    - Available datasets (OSDR, NASA Task Book, SLS Library)
    - Grant information when available
@@ -251,7 +258,7 @@ When information IS found, provide detailed responses as instructed above.`
                       description: "List of relevant research papers cited"
                     }
                   },
-                  required: ["summary", "keyFindings", "uncertaintiesAndConflicts", "technologyAndOperationalImplications", "technologyLimitations", "sourcesAndDataAccess", "sources"]
+                  required: ["summary", "sourcesAndDataAccess", "sources"]
                 }
               }
           }
