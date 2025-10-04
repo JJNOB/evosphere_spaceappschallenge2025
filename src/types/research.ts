@@ -1,14 +1,11 @@
-export type UserPersona = 'scientist' | 'manager' | 'mission_architect' | 'engineering';
-
 export interface ResearchResult {
-  persona: UserPersona;
   summary: string;
   keyFindings: string;
   uncertaintiesAndConflicts: string;
   technologyAndOperationalImplications: string;
   technologyLimitations: string;
   sourcesAndDataAccess: string;
-  engineeringAndSystemsIntegration?: string; // Only for engineering persona
+  engineeringAndSystemsIntegration: string;
   sources: Array<ResearchSource>;
 }
 
