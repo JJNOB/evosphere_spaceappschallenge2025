@@ -33,19 +33,44 @@
 
 .card {
   backdrop-filter: blur(8px);
-  background-color: hsl(var(--background) / 0.1);
-  border: 1px solid hsl(var(--border) / 0.2);
+  background-color: hsl(var(--background) / 0.2);
+  border: 2px solid hsl(var(--border) / 0.3);
   padding: 1.5rem;
-  transition: border-color 0.15s ease-in-out;
+  transition: all 0.3s ease-in-out;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.05), hsl(var(--secondary) / 0.05));
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 0;
+}
+
+.card:hover::before {
+  opacity: 1;
 }
 
 .card:hover {
-  border-color: hsl(var(--primary) / 0.5);
+  border-color: hsl(var(--primary) / 0.6);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px hsl(var(--primary) / 0.15);
 }
 
 .card:hover .iconWrapper {
-  transform: scale(1.1);
+  transform: scale(1.15) rotate(5deg);
+}
+
+.card:active {
+  transform: translateY(-2px);
 }
 
 .iconWrapper {
@@ -56,7 +81,10 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
-  transition: transform 0.15s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .icon {
@@ -70,8 +98,22 @@
   line-height: 1.75rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease-in-out;
+}
+
+.card:hover .categoryName {
+  color: hsl(var(--primary));
 }
 
 .categoryCount {
   color: hsl(var(--muted-foreground));
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease-in-out;
+}
+
+.card:hover .categoryCount {
+  color: hsl(var(--foreground));
 }

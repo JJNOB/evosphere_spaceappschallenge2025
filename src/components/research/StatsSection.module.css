@@ -12,6 +12,7 @@
   font-weight: 700;
   margin-bottom: 1.5rem;
   text-align: center;
+  color: hsl(var(--muted-foreground));
 }
 
 .grid {
@@ -28,10 +29,11 @@
 
 .card {
   backdrop-filter: blur(8px);
-  background-color: hsl(var(--background) / 0.1);
-  border: 1px solid hsl(var(--border) / 0.2);
+  background-color: hsl(var(--muted) / 0.3);
+  border: 1px solid hsl(var(--border) / 0.15);
   padding: 1.5rem;
-  opacity: 0.9;
+  opacity: 0.85;
+  cursor: default;
 }
 
 .icon {
