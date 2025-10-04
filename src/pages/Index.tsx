@@ -4,10 +4,15 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Sparkles, FileText, TrendingUp, Users, Calendar, BarChart3 } from "lucide-react";
+import { Search, Sparkles, FileText, TrendingUp, Users, Calendar, BarChart3, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [query, setQuery] = useState("");
+  const [result, setResult] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const exampleQueries = [
     "Effects of microgravity on bone density",
@@ -29,6 +34,49 @@ const Index = () => {
     { label: "Years Covered", value: "30+", icon: Calendar },
     { label: "Active Studies", value: "89", icon: TrendingUp }
   ];
+
+  const handleSearch = async () => {
+    if (!query.trim()) {
+      toast({
+        title: "Please enter a query",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('research-query', {
+        body: { query }
+      });
+
+      if (error) throw error;
+
+      if (data.error) {
+        toast({
+          title: "Error",
+          description: data.error,
+          variant: "destructive"
+        });
+        return;
+      }
+
+      setResult(data.result);
+      toast({
+        title: "Query processed",
+        description: "Results are ready"
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Error processing query",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
@@ -70,9 +118,23 @@ const Index = () => {
                   placeholder="Ask anything about space bioscience research..."
                   className="flex-1 border-0 bg-transparent text-lg focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
-                <Button size="lg" className="gap-2 bg-gradient-to-r from-primary to-secondary hover:opacity-90">
-                  <Search className="w-5 h-5" />
-                  Search
+                <Button 
+                  size="lg" 
+                  className="gap-2 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+                  onClick={handleSearch}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <Search className="w-5 h-5" />
+                      Search
+                    </>
+                  )}
                 </Button>
               </div>
             </div>
@@ -140,11 +202,17 @@ const Index = () => {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold mb-4">Research Summary</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Enter a query above to get AI-powered summaries of NASA bioscience research. 
-                    Our system analyzes hundreds of publications to provide comprehensive insights 
-                    into space biology experiments and their implications for human exploration.
-                  </p>
+                  {result ? (
+                    <div className="prose prose-invert max-w-none">
+                      <p className="text-foreground leading-relaxed whitespace-pre-wrap">{result}</p>
+                    </div>
+                  ) : (
+                    <p className="text-muted-foreground leading-relaxed">
+                      Enter a query above to get AI-powered summaries of NASA bioscience research. 
+                      Our system analyzes hundreds of publications to provide comprehensive insights 
+                      into space biology experiments and their implications for human exploration.
+                    </p>
+                  )}
                 </div>
               </div>
             </Card>
@@ -158,10 +226,16 @@ const Index = () => {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold mb-4">Key Insights</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Discover breakthrough findings, consensus areas, and conflicting results across 
-                    different studies. Understand trends and progress in space biology research.
-                  </p>
+                  {result ? (
+                    <div className="prose prose-invert max-w-none">
+                      <p className="text-foreground leading-relaxed whitespace-pre-wrap">{result}</p>
+                    </div>
+                  ) : (
+                    <p className="text-muted-foreground leading-relaxed">
+                      Discover breakthrough findings, consensus areas, and conflicting results across 
+                      different studies. Understand trends and progress in space biology research.
+                    </p>
+                  )}
                 </div>
               </div>
             </Card>
@@ -175,10 +249,16 @@ const Index = () => {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold mb-4">Knowledge Gaps</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Identify unexplored areas and research opportunities. Find where additional 
-                    studies are needed to support future Moon and Mars missions.
-                  </p>
+                  {result ? (
+                    <div className="prose prose-invert max-w-none">
+                      <p className="text-foreground leading-relaxed whitespace-pre-wrap">{result}</p>
+                    </div>
+                  ) : (
+                    <p className="text-muted-foreground leading-relaxed">
+                      Identify unexplored areas and research opportunities. Find where additional 
+                      studies are needed to support future Moon and Mars missions.
+                    </p>
+                  )}
                 </div>
               </div>
             </Card>
