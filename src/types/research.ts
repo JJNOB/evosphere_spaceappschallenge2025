@@ -8,6 +8,8 @@ export interface ResearchResult {
 export interface ResearchSource {
   title: string;
   url: string;
+  authors: string;
+  year: string;
 }
 
 export interface StatItem {

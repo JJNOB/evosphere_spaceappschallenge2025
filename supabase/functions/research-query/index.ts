@@ -106,11 +106,13 @@ IMPORTANT INSTRUCTIONS:
                       type: "object",
                       properties: {
                         title: { type: "string", description: "Title of the research paper" },
-                        url: { type: "string", description: "URL or DOI of the paper" }
+                        url: { type: "string", description: "URL or DOI of the paper" },
+                        authors: { type: "string", description: "Authors in format 'FirstAuthor et al.' if multiple authors" },
+                        year: { type: "string", description: "Publication year" }
                       },
-                      required: ["title", "url"]
+                      required: ["title", "url", "authors", "year"]
                     },
-                    description: "List of relevant research papers cited"
+                    description: "List of relevant research papers cited with authors and publication year"
                   }
                 },
                 required: ["summary", "keyFindings", "contradictions", "sources"]

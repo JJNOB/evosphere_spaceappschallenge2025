@@ -155,10 +155,27 @@
   border-color: hsl(var(--primary) / 0.5);
 }
 
+.sourceHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .sourceTitle {
   font-weight: 600;
   color: hsl(var(--foreground));
-  margin-bottom: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.sourceAuthors {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-style: italic;
+  white-space: nowrap;
 }
 
 .sourceLink {

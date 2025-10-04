@@ -158,7 +158,12 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
                   <div className={styles.sourcesList}>
                     {result.sources.map((source, i) => (
                       <div key={i} className={styles.sourceItem}>
-                        <h4 className={styles.sourceTitle}>{source.title}</h4>
+                        <div className={styles.sourceHeader}>
+                          <h4 className={styles.sourceTitle}>{source.title}</h4>
+                          <span className={styles.sourceAuthors}>
+                            {source.authors} ({source.year})
+                          </span>
+                        </div>
                         <a 
                           href={source.url} 
                           target="_blank" 
