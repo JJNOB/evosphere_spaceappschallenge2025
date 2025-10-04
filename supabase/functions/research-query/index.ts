@@ -57,7 +57,7 @@ ${RESEARCH_CONTENT}
 
 CRITICAL INSTRUCTIONS - Structure your response according to these sections:
 
-**CITATION FORMAT**: Throughout ALL sections, cite papers using the standard format (FirstAuthor et al. Year), e.g., (Smith et al. 2013). Include citations inline when referencing specific findings, data, or claims.
+**CITATION FORMAT**: Throughout ALL sections, cite papers using the standard format (ActualAuthorSurname et al. Year), e.g., (Smith et al. 2013). Extract the ACTUAL author surnames from the papers - never use placeholder text. Include citations inline when referencing specific findings, data, or claims.
 
 1. **SUMMARY (General Scope)** - Set context and overview:
    - WHY IT MATTERS: Relevance to Moon/Mars exploration and long-duration spaceflight
@@ -162,7 +162,7 @@ When information IS found, provide detailed responses as instructed above.`
                         properties: {
                           title: { type: "string", description: "Title of the research paper" },
                           url: { type: "string", description: "URL or DOI of the paper" },
-                          authors: { type: "string", description: "Authors in format 'FirstAuthor et al.' where FirstAuthor is the name listed directly below the paper title (first author position). For single author use just the name." },
+                          authors: { type: "string", description: "Extract the actual first author's surname from the paper (the name listed directly below the paper title). Format as 'Surname et al.' for multiple authors, or just 'Surname' for single author. NEVER use placeholder text like 'FirstAuthor'." },
                           year: { type: "string", description: "Publication year" }
                         },
                         required: ["title", "url", "authors", "year"]
