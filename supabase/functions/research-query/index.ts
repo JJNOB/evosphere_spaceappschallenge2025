@@ -57,6 +57,8 @@ ${RESEARCH_CONTENT}
 
 CRITICAL INSTRUCTIONS - Structure your response according to these sections:
 
+**CITATION FORMAT**: Throughout ALL sections, cite papers using the standard format (FirstAuthor et al. Year), e.g., (Smith et al. 2013). Include citations inline when referencing specific findings, data, or claims.
+
 1. **SUMMARY (General Scope)** - Set context and overview:
    - WHY IT MATTERS: Relevance to Moon/Mars exploration and long-duration spaceflight
    - RESEARCH LANDSCAPE: Number and types of studies (human, animal, plant, microbe)
@@ -67,22 +69,22 @@ CRITICAL INSTRUCTIONS - Structure your response according to these sections:
 
 2. **KEY FINDINGS / CONCLUSIONS** - Main proven results:
    - 3-7 findings with quantitative data when possible
+   - Cite specific papers for each finding (FirstAuthor et al. Year)
    - Mechanisms and pathways discovered
    - Validated countermeasures or tested solutions
-   - Include representative references
    Source: Results + Conclusions
 
 3. **UNCERTAINTIES & CONFLICTS** - Gaps and disagreements:
-   - Conflicting results between studies
+   - Conflicting results between studies with citations
    - Reasons for conflicts (species differences, duration, hardware variations)
    - Data shortages and areas with low confidence
    - Open questions requiring further research
    Source: Discussion + Conclusions
 
 4. **TECHNOLOGY & OPERATIONAL IMPLICATIONS** - Mission planning connections:
-   - Existing flight and ground hardware used
+   - Existing flight and ground hardware used (cite papers)
    - Environmental conditions studied
-   - Countermeasures and their Technology Readiness Level (TRL)
+   - Countermeasures and their Technology Readiness Level (TRL) with citations
    - Operational impacts on missions
    Source: Conclusions + Methods
 
