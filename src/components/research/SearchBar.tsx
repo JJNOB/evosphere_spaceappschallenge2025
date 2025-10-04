@@ -25,7 +25,7 @@ export const SearchBar = ({ value, onChange, onSearch, isLoading }: SearchBarPro
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onKeyPress={handleKeyPress}
-          placeholder="Ask anything about space bioscience research..."
+          placeholder="Search for a specific topic in space bioscience research..."
           className={styles.input}
         />
         <Button 
