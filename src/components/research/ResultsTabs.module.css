@@ -4,25 +4,49 @@
   margin-right: auto;
   padding: 0 1rem;
   margin-bottom: 4rem;
+  display: flex;
+  justify-content: center;
 }
 
 .tabs {
   width: 100%;
+  max-width: 80rem;
 }
 
 .tabsList {
   display: grid;
   width: 100%;
   max-width: 42rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto 2rem;
   grid-template-columns: repeat(4, 1fr);
   backdrop-filter: blur(8px);
-  background-color: hsl(var(--background) / 0.1);
-  border: 1px solid hsl(var(--border) / 0.2);
+  background-color: hsl(var(--muted) / 0.3);
+  border: 1px solid hsl(var(--border));
+  padding: 0.25rem;
+  border-radius: 0.5rem;
 }
 
 .tabTrigger {
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.625rem 1rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease-in-out;
+  color: hsl(var(--muted-foreground));
+}
+
+.tabTrigger:hover:not([disabled]) {
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--muted) / 0.5);
+}
+
+.tabTrigger[data-state="active"] {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.tabTrigger[disabled] {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -33,9 +57,10 @@
 
 .card {
   backdrop-filter: blur(8px);
-  background-color: hsl(var(--background) / 0.1);
-  border: 1px solid hsl(var(--border) / 0.2);
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
   padding: 2rem;
+  border-radius: 0.75rem;
 }
 
 .cardInner {

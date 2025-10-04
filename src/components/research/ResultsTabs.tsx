@@ -34,7 +34,9 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
     <section className={styles.section}>
       <Tabs defaultValue="summary" className={styles.tabs}>
         <TabsList className={styles.tabsList}>
-          <TabsTrigger value="summary">Summary</TabsTrigger>
+          <TabsTrigger value="summary" className={styles.tabTrigger}>
+            Summary
+          </TabsTrigger>
           <TabsTrigger 
             value="insights" 
             disabled={!hasResults}
