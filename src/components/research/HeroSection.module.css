@@ -1,0 +1,81 @@
+.header {
+  position: relative;
+  padding-top: 5rem;
+  padding-bottom: 4rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-align: center;
+}
+
+.container {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  backdrop-filter: blur(8px);
+  background-color: hsl(var(--background) / 0.1);
+  border: 1px solid hsl(var(--border) / 0.2);
+  border-radius: 9999px;
+  margin-bottom: 1rem;
+  align-self: center;
+}
+
+.badgeIcon {
+  width: 1rem;
+  height: 1rem;
+  color: hsl(var(--primary));
+}
+
+.badgeText {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 4.5rem;
+  }
+}
+
+.titleGradient {
+  background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.titleText {
+  color: hsl(var(--foreground));
+}
+
+.description {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  color: hsl(var(--muted-foreground));
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.searchContainer {
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem;
+}

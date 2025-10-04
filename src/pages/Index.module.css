@@ -1,0 +1,4 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, hsl(var(--background)), hsl(var(--background)), hsl(var(--muted) / 0.2));
+}

@@ -1,0 +1,62 @@
+.container {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.star1 {
+  position: absolute;
+  top: 5rem;
+  left: 5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: hsl(var(--primary));
+  border-radius: 9999px;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.star2 {
+  position: absolute;
+  top: 10rem;
+  right: 8rem;
+  width: 0.25rem;
+  height: 0.25rem;
+  background-color: hsl(var(--secondary));
+  border-radius: 9999px;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation-delay: 300ms;
+}
+
+.star3 {
+  position: absolute;
+  bottom: 8rem;
+  left: 25%;
+  width: 0.375rem;
+  height: 0.375rem;
+  background-color: hsl(var(--accent));
+  border-radius: 9999px;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation-delay: 700ms;
+}
+
+.star4 {
+  position: absolute;
+  top: 33.333333%;
+  right: 25%;
+  width: 0.25rem;
+  height: 0.25rem;
+  background-color: hsl(var(--primary) / 0.6);
+  border-radius: 9999px;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation-delay: 500ms;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
