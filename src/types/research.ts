@@ -4,11 +4,7 @@ export interface ResearchResult {
   persona: UserPersona;
   summary: string;
   keyFindings: string;
-  uncertaintiesAndConflicts: string;
-  technologyAndOperationalImplications: string;
-  technologyLimitations: string;
-  sourcesAndDataAccess: string;
-  engineeringAndSystemsIntegration?: string; // Only for engineering persona
+  contradictions: string;
   sources: Array<ResearchSource>;
 }
 

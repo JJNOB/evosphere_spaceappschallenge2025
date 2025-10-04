@@ -125,69 +125,40 @@ Research Paper Content:
 ${RESEARCH_CONTENT}
 
 DETECTED USER PERSONA: ${persona}
+Note: For now, provide the standard research response. Persona-specific customization will be added in the next phase.
 
-CRITICAL INSTRUCTIONS - Structure your response according to these sections:
+IMPORTANT INSTRUCTIONS:
+1. For the SUMMARY section (General Scope):
+   - Structure the summary to address these key aspects:
+     * WHY IT MATTERS: Explain the relevance to Moon/Mars exploration and long-duration spaceflight
+     * RESEARCH LANDSCAPE: Describe the number and types of studies (human, animal, plant, microbe studies)
+     * PLATFORMS & METHODS: Identify platforms used (ISS, Space Shuttle, biosatellites, ground analogs, parabolic flights, simulation studies)
+     * TIMELINE & MATURITY: Indicate the timeframe of research and level of scientific maturity/consensus
+     * KEY RISKS & SYSTEMS: Highlight the biological systems affected and primary risks identified
+   
+   - Writing style:
+     * If analyzing 1-2 papers: Cite the author(s) ONCE at the beginning, then present findings
+     * If analyzing 3+ papers: Use inline citations throughout in academic style
+     * Be concise but comprehensive - cover all aspects above
+     * Use clear paragraph breaks between major points
+   
+   - Audience considerations:
+     * Scientists need: Quick landscape overview and prior art foundation
+     * Managers need: Scope of available work and research maturity assessment
+     * Mission architects need: Direct relevance to human exploration mission requirements
+     * Engineering need: Technical platforms and measurement capabilities context
 
-1. **SUMMARY (General Scope)** - Set context and overview:
-   - WHY IT MATTERS: Relevance to Moon/Mars exploration and long-duration spaceflight
-   - RESEARCH LANDSCAPE: Number and types of studies (human, animal, plant, microbe)
-   - PLATFORMS & METHODS: ISS, Space Shuttle, biosatellites, ground analogs, parabolic flights
-   - TIMELINE & MATURITY: Timeframe of research and level of scientific maturity/consensus
-   - KEY RISKS & SYSTEMS: Biological systems affected and primary risks identified
-   Source: Introduction + Abstract
+2. For KEY FINDINGS:
+   - List the 3-5 most critical discoveries
+   - For 1-2 papers: No need to cite repeatedly
+   - For 3+ papers: Include author citations to distinguish sources
+   - Use bullet points with brief explanations
 
-2. **KEY FINDINGS / CONCLUSIONS** - Main proven results:
-   - 3-7 findings with quantitative data when possible
-   - Mechanisms and pathways discovered
-   - Validated countermeasures or tested solutions
-   - Include representative references
-   Source: Results + Conclusions
+3. For CONTRADICTIONS:
+   - Only mention significant debates or conflicting results between studies
+   - Always cite the authors of conflicting studies
 
-3. **UNCERTAINTIES & CONFLICTS** - Gaps and disagreements:
-   - Conflicting results between studies
-   - Reasons for conflicts (species differences, duration, hardware variations)
-   - Data shortages and areas with low confidence
-   - Open questions requiring further research
-   Source: Discussion + Conclusions
-
-4. **TECHNOLOGY & OPERATIONAL IMPLICATIONS** - Mission planning connections:
-   - Existing flight and ground hardware used
-   - Environmental conditions studied
-   - Countermeasures and their Technology Readiness Level (TRL)
-   - Operational impacts on missions
-   Source: Conclusions + Methods
-
-5. **TECHNOLOGY LIMITATIONS** - Hardware/method constraints:
-   - Hardware and environment constraints
-   - Sample handling and data collection issues
-   - Scalability and integration gaps
-   - Maintainability concerns
-   Source: Methods + Discussion
-
-6. **SOURCES & DATA ACCESS** - Transparency and traceability:
-   - Core papers with full citations
-   - Available datasets (OSDR, NASA Task Book, SLS Library)
-   - Grant information when available
-   - Links to primary data sources
-   Source: References + Metadata
-
-${persona === 'engineering' ? `
-7. **ENGINEERING & SYSTEMS INTEGRATION** - Actionable requirements (ENGINEER-SPECIFIC):
-   - Derived requirements with "shall/should" statements
-   - Interface and environment envelopes (mass, power, thermal, vibration, radiation)
-   - Architecture option trades
-   - Risk register items
-   - Verification & Validation plans
-   Source: Methods + Results + Hardware appendices
-` : ''}
-
-AUDIENCE-SPECIFIC EMPHASIS for ${persona}:
-${persona === 'scientist' ? '- Focus on: evidence base, prior art, experimental conditions, data quality, hypothesis generation areas' : ''}
-${persona === 'manager' ? '- Focus on: scope maturity, funding gaps, proven vs emerging tech, investment opportunities, TRL levels' : ''}
-${persona === 'mission_architect' ? '- Focus on: exploration relevance, risk models, habitat/vehicle/ECLSS implications, safety constraints' : ''}
-${persona === 'engineering' ? '- Focus on: hardware specs, design targets, integration constraints, test reports, V&V approaches, derived requirements' : ''}
-
-If the query is NOT related to the research content, indicate that no relevant information was found and suggest what topics ARE covered in the database.`
+4. If the query is NOT related to the research content, indicate that no relevant information was found and suggest what topics ARE covered in the database.`
           },
           {
             role: "user",
@@ -197,58 +168,42 @@ If the query is NOT related to the research content, indicate that no relevant i
         tools: [
           {
             type: "function",
-              function: {
-                name: "structure_research_response",
-                description: "Structure the research response with all required sections in markdown format",
-                parameters: {
-                  type: "object",
-                  properties: {
-                    summary: {
-                      type: "string",
-                      description: "General scope covering: relevance to Moon/Mars, research landscape, platforms, timeline & maturity, key systems & risks"
-                    },
-                    keyFindings: {
-                      type: "string",
-                      description: "3-7 main proven results with quantitative data, mechanisms, countermeasures, and references"
-                    },
-                    uncertaintiesAndConflicts: {
-                      type: "string",
-                      description: "Gaps, disagreements, conflicting results, reasons for conflicts, data shortages, open questions"
-                    },
-                    technologyAndOperationalImplications: {
-                      type: "string",
-                      description: "Flight/ground hardware, environmental conditions, countermeasures with TRL, operational impacts"
-                    },
-                    technologyLimitations: {
-                      type: "string",
-                      description: "Hardware constraints, sample handling issues, scalability gaps, maintainability concerns"
-                    },
-                    sourcesAndDataAccess: {
-                      type: "string",
-                      description: "Core papers, datasets (OSDR, NASA Task Book), grant info, citations with links"
-                    },
-                    engineeringAndSystemsIntegration: {
-                      type: "string",
-                      description: "ONLY for engineering persona: Derived requirements (shall/should), interface envelopes (mass/power/thermal/vibration/radiation), architecture trades, risk register, V&V plans"
-                    },
-                    sources: {
-                      type: "array",
-                      items: {
-                        type: "object",
-                        properties: {
-                          title: { type: "string", description: "Title of the research paper" },
-                          url: { type: "string", description: "URL or DOI of the paper" },
-                          authors: { type: "string", description: "Authors in format 'FirstAuthor et al.' if multiple authors" },
-                          year: { type: "string", description: "Publication year" }
-                        },
-                        required: ["title", "url", "authors", "year"]
-                      },
-                      description: "List of relevant research papers cited"
-                    }
+            function: {
+              name: "structure_research_response",
+              description: "Structure the research response with clear sections in markdown format",
+              parameters: {
+                type: "object",
+                properties: {
+                  summary: {
+                    type: "string",
+                    description: "Comprehensive general scope covering: 1) Relevance to Moon/Mars exploration, 2) Research landscape (study types and count), 3) Platforms and methods used, 4) Timeline and research maturity, 5) Key biological systems and risks. Structure with clear paragraphs for each aspect."
                   },
-                  required: ["summary", "keyFindings", "uncertaintiesAndConflicts", "technologyAndOperationalImplications", "technologyLimitations", "sourcesAndDataAccess", "sources"]
-                }
+                  keyFindings: {
+                    type: "string",
+                    description: "3-5 most critical discoveries in bullet points. Only include citations if multiple papers are involved."
+                  },
+                  contradictions: {
+                    type: "string",
+                    description: "Contradictions or debates in the research community in markdown format, or empty string if none applicable"
+                  },
+                  sources: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        title: { type: "string", description: "Title of the research paper" },
+                        url: { type: "string", description: "URL or DOI of the paper" },
+                        authors: { type: "string", description: "Authors in format 'FirstAuthor et al.' if multiple authors" },
+                        year: { type: "string", description: "Publication year" }
+                      },
+                      required: ["title", "url", "authors", "year"]
+                    },
+                    description: "List of relevant research papers cited with authors and publication year"
+                  }
+                },
+                required: ["summary", "keyFindings", "contradictions", "sources"]
               }
+            }
           }
         ],
         tool_choice: { type: "function", function: { name: "structure_research_response" } }
