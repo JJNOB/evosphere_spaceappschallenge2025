@@ -14,16 +14,18 @@
 }
 
 .tabsList {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
-  max-width: 42rem;
+  max-width: 60rem;
   margin: 0 auto 2rem;
-  grid-template-columns: repeat(4, 1fr);
+  gap: 0.25rem;
   backdrop-filter: blur(8px);
   background-color: hsl(var(--muted) / 0.3);
   border: 1px solid hsl(var(--border));
-  padding: 0.25rem;
+  padding: 0.5rem;
   border-radius: 0.5rem;
+  justify-content: center;
 }
 
 .tabTrigger {
@@ -33,6 +35,8 @@
   border-radius: 0.375rem;
   transition: all 0.2s ease-in-out;
   color: hsl(var(--muted-foreground));
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .tabTrigger:hover:not([disabled]) {
