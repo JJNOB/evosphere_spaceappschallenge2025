@@ -188,7 +188,7 @@ ${persona === 'mission_architect' ? '- Focus on: exploration relevance, risk mod
 ${persona === 'engineering' ? '- Focus on: hardware specs, design targets, integration constraints, test reports, V&V approaches, derived requirements' : ''}
 
 CRITICAL: If the query is NOT related to the research content available, you MUST return this EXACT message in the summary field:
-"The relevant information to answer your query could not be found in the current database. The available research focuses on space biology topics including: microgravity effects on mice, physiological adaptations, cardiovascular responses, muscle atrophy, bone density changes, and biomedical research protocols from the Bion-M 1 Space Mission."
+"The relevant information to process your query could not be found in the current database"
 
 For all other fields when no information is found, return: "No relevant information available in the current database."
 
