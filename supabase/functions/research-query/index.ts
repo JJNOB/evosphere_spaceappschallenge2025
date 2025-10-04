@@ -54,7 +54,24 @@ serve(async (req) => {
 Research Paper Content:
 ${RESEARCH_CONTENT}
 
-IMPORTANT: If the user's query is not related to the content of this research paper, you must indicate this by setting all fields to explain that no relevant information was found in the database. Be helpful and suggest what topics ARE covered in the database.`
+IMPORTANT INSTRUCTIONS:
+1. For the SUMMARY section:
+   - Write it in an academic introduction style, similar to a literature review
+   - ALWAYS cite authors when mentioning findings (e.g., "Smith et al. demonstrated that...", "According to Johnson and Lee...")
+   - Focus ONLY on the most important and significant findings
+   - Be concise - prioritize quality over quantity of information
+   - If multiple papers cover the same topic, synthesize them into cohesive paragraphs rather than listing everything
+   - Use proper academic tone and structure
+
+2. For KEY FINDINGS:
+   - List the 3-5 most critical discoveries with author citations
+   - Use bullet points with brief explanations
+
+3. For CONTRADICTIONS:
+   - Only mention significant debates or conflicting results between studies
+   - Cite the authors of conflicting studies
+
+4. If the query is NOT related to the research content, indicate that no relevant information was found and suggest what topics ARE covered in the database.`
           },
           {
             role: "user",
@@ -72,11 +89,11 @@ IMPORTANT: If the user's query is not related to the content of this research pa
                 properties: {
                   summary: {
                     type: "string",
-                    description: "General summary of the research in markdown format with key findings and methodology"
+                    description: "Write an academic-style introduction paragraph that synthesizes the research. MUST cite authors (e.g., 'Smith et al. found that...'). Focus on the most important findings only. Be concise."
                   },
                   keyFindings: {
                     type: "string",
-                    description: "Key findings and important discoveries in markdown format with bullet points"
+                    description: "List 3-5 most critical discoveries in bullet points with author citations. Use markdown format."
                   },
                   contradictions: {
                     type: "string",
