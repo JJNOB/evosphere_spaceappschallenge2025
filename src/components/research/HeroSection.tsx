@@ -2,7 +2,6 @@ import { Sparkles } from "lucide-react";
 import { SearchBar } from "./SearchBar";
 import { ExampleQueries } from "./ExampleQueries";
 import styles from './HeroSection.module.css';
-
 interface HeroSectionProps {
   query: string;
   setQuery: (query: string) => void;
@@ -10,16 +9,14 @@ interface HeroSectionProps {
   isLoading: boolean;
   exampleQueries: string[];
 }
-
-export const HeroSection = ({ 
-  query, 
-  setQuery, 
-  onSearch, 
-  isLoading, 
-  exampleQueries 
+export const HeroSection = ({
+  query,
+  setQuery,
+  onSearch,
+  isLoading,
+  exampleQueries
 }: HeroSectionProps) => {
-  return (
-    <header className={styles.header}>
+  return <header className={styles.header}>
       <div className={styles.container}>
         <div className={styles.badge}>
           <Sparkles className={styles.badgeIcon} />
@@ -27,7 +24,7 @@ export const HeroSection = ({
         </div>
         
         <h1 className={styles.title}>
-          <span className={styles.titleGradient}>NASA BioScience</span>
+          <span className={styles.titleGradient}>SPACE Biology</span>
           <br />
           <span className={styles.titleText}>Research Explorer</span>
         </h1>
@@ -38,19 +35,10 @@ export const HeroSection = ({
         </p>
 
         <div className={styles.searchContainer}>
-          <SearchBar
-            value={query}
-            onChange={setQuery}
-            onSearch={onSearch}
-            isLoading={isLoading}
-          />
+          <SearchBar value={query} onChange={setQuery} onSearch={onSearch} isLoading={isLoading} />
           
-          <ExampleQueries
-            queries={exampleQueries}
-            onQuerySelect={setQuery}
-          />
+          <ExampleQueries queries={exampleQueries} onQuerySelect={setQuery} />
         </div>
       </div>
-    </header>
-  );
+    </header>;
 };
