@@ -162,7 +162,7 @@ When information IS found, provide detailed responses as instructed above.`
                         properties: {
                           title: { type: "string", description: "Title of the research paper" },
                           url: { type: "string", description: "URL or DOI of the paper" },
-                          authors: { type: "string", description: "Authors in format 'FirstAuthor et al.' if multiple authors" },
+                          authors: { type: "string", description: "Authors in format 'FirstAuthor et al.' where FirstAuthor is the name listed directly below the paper title (first author position). For single author use just the name." },
                           year: { type: "string", description: "Publication year" }
                         },
                         required: ["title", "url", "authors", "year"]
