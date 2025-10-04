@@ -195,11 +195,17 @@ const Index = () => {
           <TabsContent value="summary" className="mt-8">
             <Card className="glass p-8">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                  result && result.sources.length > 0 
+                    ? "bg-gradient-to-br from-primary to-secondary" 
+                    : "bg-gradient-to-br from-orange-500 to-red-500"
+                }`}>
                   <FileText className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-2xl font-bold mb-4">General Summary</h3>
+                  <h3 className="text-2xl font-bold mb-4">
+                    {result && result.sources.length > 0 ? "General Summary" : "No Information Found"}
+                  </h3>
                   {result ? (
                     <div className="prose prose-invert max-w-none text-foreground leading-relaxed">
                       <ReactMarkdown>{result.summary}</ReactMarkdown>
