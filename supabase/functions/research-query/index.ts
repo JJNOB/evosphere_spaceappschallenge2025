@@ -93,13 +93,16 @@ CRITICAL INSTRUCTIONS - Structure your response according to these sections:
    - Maintainability concerns
     Source: Methods + Discussion
 
-7. **ENGINEERING & SYSTEMS INTEGRATION** - Actionable requirements:
-   - Derived requirements with "shall/should" statements
-   - Interface and environment envelopes (mass, power, thermal, vibration, radiation)
-   - Architecture option trades
-   - Risk register items
-   - Verification & Validation plans
-   Source: Methods + Results + Hardware appendices
+7. **SPECIFICATIONS** - Engineering constraints and design parameters:
+   - Operating temperature ranges and environmental conditions
+   - Power requirements and constraints
+   - Mass, volume, and dimensional specifications
+   - Radiation tolerance and shielding requirements
+   - Vibration and structural load specifications
+   - Interface requirements (mechanical, electrical, data)
+   - Sample handling and containment specifications
+   - Mission duration constraints and life support requirements
+   Source: Methods + Results + Hardware specifications
 
 CRITICAL: If the query is NOT related to the research content available, you MUST return this EXACT message in the summary field:
 "The relevant information to process your query could not be found in the current database"
@@ -148,7 +151,7 @@ When information IS found, provide detailed responses as instructed above.`
                     },
                     engineeringAndSystemsIntegration: {
                       type: "string",
-                      description: "Derived requirements (shall/should), interface envelopes (mass/power/thermal/vibration/radiation), architecture trades, risk register, V&V plans"
+                      description: "Engineering constraints and design parameters: operating temperature ranges, power requirements, mass/volume/dimensional specs, radiation tolerance, vibration specs, interface requirements, sample handling specs, mission duration constraints"
                     },
                     sources: {
                       type: "array",
