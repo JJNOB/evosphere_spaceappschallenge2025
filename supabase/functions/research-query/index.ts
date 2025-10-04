@@ -187,7 +187,12 @@ ${persona === 'manager' ? '- Focus on: scope maturity, funding gaps, proven vs e
 ${persona === 'mission_architect' ? '- Focus on: exploration relevance, risk models, habitat/vehicle/ECLSS implications, safety constraints' : ''}
 ${persona === 'engineering' ? '- Focus on: hardware specs, design targets, integration constraints, test reports, V&V approaches, derived requirements' : ''}
 
-If the query is NOT related to the research content, indicate that no relevant information was found and suggest what topics ARE covered in the database.`
+CRITICAL: If the query is NOT related to the research content available, you MUST return this EXACT message in the summary field:
+"The relevant information to process your query could not be found in the current database"
+
+For all other fields when no information is found, return: "No relevant information available in the current database."
+
+When information IS found, provide detailed responses as instructed above.`
           },
           {
             role: "user",
@@ -205,7 +210,7 @@ If the query is NOT related to the research content, indicate that no relevant i
                   properties: {
                     summary: {
                       type: "string",
-                      description: "General scope covering: relevance to Moon/Mars, research landscape, platforms, timeline & maturity, key systems & risks"
+                      description: "General scope covering: relevance to Moon/Mars, research landscape, platforms, timeline & maturity, key systems & risks. If no relevant information found, use the exact message specified in the system prompt."
                     },
                     keyFindings: {
                       type: "string",
