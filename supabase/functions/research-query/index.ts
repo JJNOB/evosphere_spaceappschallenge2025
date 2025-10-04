@@ -38,6 +38,76 @@ serve(async (req) => {
 
     console.log('Processing query:', query);
 
+    // Step 1: Classify user persona
+    const personaResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        messages: [
+          {
+            role: "system",
+            content: `You are a persona classifier for space biology research queries. 
+Analyze the user's query and classify them into ONE of these personas based on their needs and focus:
+
+- scientist: Looking for detailed biological mechanisms, cellular processes, molecular data, research methodology
+- manager: Interested in project outcomes, timelines, resource allocation, team coordination
+- mission_architect: Focused on mission design, requirements, constraints, system integration
+- engineering: Concerned with technical specifications, hardware, measurements, implementation
+
+Return ONLY the persona type.`
+          },
+          {
+            role: "user",
+            content: query
+          }
+        ],
+        tools: [
+          {
+            type: "function",
+            function: {
+              name: "classify_persona",
+              description: "Classify the user into one of the predefined personas",
+              parameters: {
+                type: "object",
+                properties: {
+                  persona: {
+                    type: "string",
+                    enum: ["scientist", "manager", "mission_architect", "engineering"],
+                    description: "The classified user persona"
+                  },
+                  reasoning: {
+                    type: "string",
+                    description: "Brief explanation of why this persona was chosen"
+                  }
+                },
+                required: ["persona", "reasoning"]
+              }
+            }
+          }
+        ],
+        tool_choice: { type: "function", function: { name: "classify_persona" } }
+      }),
+    });
+
+    if (!personaResponse.ok) {
+      throw new Error(`Persona classification failed: ${personaResponse.status}`);
+    }
+
+    const personaData = await personaResponse.json();
+    const personaToolCall = personaData.choices[0].message.tool_calls?.[0];
+    
+    if (!personaToolCall) {
+      throw new Error('No persona classification received');
+    }
+
+    const { persona, reasoning } = JSON.parse(personaToolCall.function.arguments);
+    console.log('Classified persona:', persona, '- Reasoning:', reasoning);
+
+    // Step 2: Generate research response
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -54,25 +124,70 @@ serve(async (req) => {
 Research Paper Content:
 ${RESEARCH_CONTENT}
 
-IMPORTANT INSTRUCTIONS:
-1. For the SUMMARY section:
-   - If analyzing 1-2 papers: Cite the author(s) ONCE at the beginning (e.g., "Smith et al. (2013) investigated..."), then present findings without repeated citations
-   - If analyzing 3+ papers: Write in academic literature review style with inline citations throughout (e.g., "Smith et al. demonstrated that...", "According to Johnson and Lee...")
-   - Focus ONLY on the most important and significant findings
-   - Be concise - prioritize quality over quantity
-   - Use proper academic tone and structure
+DETECTED USER PERSONA: ${persona}
 
-2. For KEY FINDINGS:
-   - List the 3-5 most critical discoveries
-   - For 1-2 papers: No need to cite repeatedly
-   - For 3+ papers: Include author citations to distinguish sources
-   - Use bullet points with brief explanations
+CRITICAL INSTRUCTIONS - Structure your response according to these sections:
 
-3. For CONTRADICTIONS:
-   - Only mention significant debates or conflicting results between studies
-   - Always cite the authors of conflicting studies
+1. **SUMMARY (General Scope)** - Set context and overview:
+   - WHY IT MATTERS: Relevance to Moon/Mars exploration and long-duration spaceflight
+   - RESEARCH LANDSCAPE: Number and types of studies (human, animal, plant, microbe)
+   - PLATFORMS & METHODS: ISS, Space Shuttle, biosatellites, ground analogs, parabolic flights
+   - TIMELINE & MATURITY: Timeframe of research and level of scientific maturity/consensus
+   - KEY RISKS & SYSTEMS: Biological systems affected and primary risks identified
+   Source: Introduction + Abstract
 
-4. If the query is NOT related to the research content, indicate that no relevant information was found and suggest what topics ARE covered in the database.`
+2. **KEY FINDINGS / CONCLUSIONS** - Main proven results:
+   - 3-7 findings with quantitative data when possible
+   - Mechanisms and pathways discovered
+   - Validated countermeasures or tested solutions
+   - Include representative references
+   Source: Results + Conclusions
+
+3. **UNCERTAINTIES & CONFLICTS** - Gaps and disagreements:
+   - Conflicting results between studies
+   - Reasons for conflicts (species differences, duration, hardware variations)
+   - Data shortages and areas with low confidence
+   - Open questions requiring further research
+   Source: Discussion + Conclusions
+
+4. **TECHNOLOGY & OPERATIONAL IMPLICATIONS** - Mission planning connections:
+   - Existing flight and ground hardware used
+   - Environmental conditions studied
+   - Countermeasures and their Technology Readiness Level (TRL)
+   - Operational impacts on missions
+   Source: Conclusions + Methods
+
+5. **TECHNOLOGY LIMITATIONS** - Hardware/method constraints:
+   - Hardware and environment constraints
+   - Sample handling and data collection issues
+   - Scalability and integration gaps
+   - Maintainability concerns
+   Source: Methods + Discussion
+
+6. **SOURCES & DATA ACCESS** - Transparency and traceability:
+   - Core papers with full citations
+   - Available datasets (OSDR, NASA Task Book, SLS Library)
+   - Grant information when available
+   - Links to primary data sources
+   Source: References + Metadata
+
+${persona === 'engineering' ? `
+7. **ENGINEERING & SYSTEMS INTEGRATION** - Actionable requirements (ENGINEER-SPECIFIC):
+   - Derived requirements with "shall/should" statements
+   - Interface and environment envelopes (mass, power, thermal, vibration, radiation)
+   - Architecture option trades
+   - Risk register items
+   - Verification & Validation plans
+   Source: Methods + Results + Hardware appendices
+` : ''}
+
+AUDIENCE-SPECIFIC EMPHASIS for ${persona}:
+${persona === 'scientist' ? '- Focus on: evidence base, prior art, experimental conditions, data quality, hypothesis generation areas' : ''}
+${persona === 'manager' ? '- Focus on: scope maturity, funding gaps, proven vs emerging tech, investment opportunities, TRL levels' : ''}
+${persona === 'mission_architect' ? '- Focus on: exploration relevance, risk models, habitat/vehicle/ECLSS implications, safety constraints' : ''}
+${persona === 'engineering' ? '- Focus on: hardware specs, design targets, integration constraints, test reports, V&V approaches, derived requirements' : ''}
+
+If the query is NOT related to the research content, indicate that no relevant information was found and suggest what topics ARE covered in the database.`
           },
           {
             role: "user",
@@ -82,42 +197,58 @@ IMPORTANT INSTRUCTIONS:
         tools: [
           {
             type: "function",
-            function: {
-              name: "structure_research_response",
-              description: "Structure the research response with clear sections in markdown format",
-              parameters: {
-                type: "object",
-                properties: {
-                  summary: {
-                    type: "string",
-                    description: "Academic-style summary. For 1-2 papers: cite author(s) once at start, then present findings. For 3+ papers: use inline citations throughout. Focus on most important findings only."
-                  },
-                  keyFindings: {
-                    type: "string",
-                    description: "3-5 most critical discoveries in bullet points. Only include citations if multiple papers are involved."
-                  },
-                  contradictions: {
-                    type: "string",
-                    description: "Contradictions or debates in the research community in markdown format, or empty string if none applicable"
-                  },
-                  sources: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        title: { type: "string", description: "Title of the research paper" },
-                        url: { type: "string", description: "URL or DOI of the paper" },
-                        authors: { type: "string", description: "Authors in format 'FirstAuthor et al.' if multiple authors" },
-                        year: { type: "string", description: "Publication year" }
-                      },
-                      required: ["title", "url", "authors", "year"]
+              function: {
+                name: "structure_research_response",
+                description: "Structure the research response with all required sections in markdown format",
+                parameters: {
+                  type: "object",
+                  properties: {
+                    summary: {
+                      type: "string",
+                      description: "General scope covering: relevance to Moon/Mars, research landscape, platforms, timeline & maturity, key systems & risks"
                     },
-                    description: "List of relevant research papers cited with authors and publication year"
-                  }
-                },
-                required: ["summary", "keyFindings", "contradictions", "sources"]
+                    keyFindings: {
+                      type: "string",
+                      description: "3-7 main proven results with quantitative data, mechanisms, countermeasures, and references"
+                    },
+                    uncertaintiesAndConflicts: {
+                      type: "string",
+                      description: "Gaps, disagreements, conflicting results, reasons for conflicts, data shortages, open questions"
+                    },
+                    technologyAndOperationalImplications: {
+                      type: "string",
+                      description: "Flight/ground hardware, environmental conditions, countermeasures with TRL, operational impacts"
+                    },
+                    technologyLimitations: {
+                      type: "string",
+                      description: "Hardware constraints, sample handling issues, scalability gaps, maintainability concerns"
+                    },
+                    sourcesAndDataAccess: {
+                      type: "string",
+                      description: "Core papers, datasets (OSDR, NASA Task Book), grant info, citations with links"
+                    },
+                    engineeringAndSystemsIntegration: {
+                      type: "string",
+                      description: "ONLY for engineering persona: Derived requirements (shall/should), interface envelopes (mass/power/thermal/vibration/radiation), architecture trades, risk register, V&V plans"
+                    },
+                    sources: {
+                      type: "array",
+                      items: {
+                        type: "object",
+                        properties: {
+                          title: { type: "string", description: "Title of the research paper" },
+                          url: { type: "string", description: "URL or DOI of the paper" },
+                          authors: { type: "string", description: "Authors in format 'FirstAuthor et al.' if multiple authors" },
+                          year: { type: "string", description: "Publication year" }
+                        },
+                        required: ["title", "url", "authors", "year"]
+                      },
+                      description: "List of relevant research papers cited"
+                    }
+                  },
+                  required: ["summary", "keyFindings", "uncertaintiesAndConflicts", "technologyAndOperationalImplications", "technologyLimitations", "sourcesAndDataAccess", "sources"]
+                }
               }
-            }
           }
         ],
         tool_choice: { type: "function", function: { name: "structure_research_response" } }
@@ -154,6 +285,9 @@ IMPORTANT INSTRUCTIONS:
     }
 
     const result = JSON.parse(toolCall.function.arguments);
+    
+    // Add persona to the result
+    result.persona = persona;
 
     console.log('Query processed successfully');
 

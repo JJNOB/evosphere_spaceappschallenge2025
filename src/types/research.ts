@@ -1,7 +1,14 @@
+export type UserPersona = 'scientist' | 'manager' | 'mission_architect' | 'engineering';
+
 export interface ResearchResult {
+  persona: UserPersona;
   summary: string;
   keyFindings: string;
-  contradictions: string;
+  uncertaintiesAndConflicts: string;
+  technologyAndOperationalImplications: string;
+  technologyLimitations: string;
+  sourcesAndDataAccess: string;
+  engineeringAndSystemsIntegration?: string; // Only for engineering persona
   sources: Array<ResearchSource>;
 }
 
