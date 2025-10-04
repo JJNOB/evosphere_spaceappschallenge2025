@@ -38,6 +38,77 @@ serve(async (req) => {
 
     console.log('Processing query:', query);
 
+    // Step 1: Classify user persona
+    const personaResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        messages: [
+          {
+            role: "system",
+            content: `You are a persona classifier for space biology research queries. 
+Analyze the user's query and classify them into ONE of these personas based on their needs and focus:
+
+- scientist: Looking for detailed biological mechanisms, cellular processes, molecular data
+- manager: Interested in project outcomes, timelines, resource allocation, team coordination
+- mission_architect: Focused on mission design, requirements, constraints, system integration
+- engineering: Concerned with technical specifications, hardware, measurements, implementation
+- academia: Seeking research methodology, statistical analysis, publication-worthy insights
+
+Return ONLY the persona type.`
+          },
+          {
+            role: "user",
+            content: query
+          }
+        ],
+        tools: [
+          {
+            type: "function",
+            function: {
+              name: "classify_persona",
+              description: "Classify the user into one of the predefined personas",
+              parameters: {
+                type: "object",
+                properties: {
+                  persona: {
+                    type: "string",
+                    enum: ["scientist", "manager", "mission_architect", "engineering", "academia"],
+                    description: "The classified user persona"
+                  },
+                  reasoning: {
+                    type: "string",
+                    description: "Brief explanation of why this persona was chosen"
+                  }
+                },
+                required: ["persona", "reasoning"]
+              }
+            }
+          }
+        ],
+        tool_choice: { type: "function", function: { name: "classify_persona" } }
+      }),
+    });
+
+    if (!personaResponse.ok) {
+      throw new Error(`Persona classification failed: ${personaResponse.status}`);
+    }
+
+    const personaData = await personaResponse.json();
+    const personaToolCall = personaData.choices[0].message.tool_calls?.[0];
+    
+    if (!personaToolCall) {
+      throw new Error('No persona classification received');
+    }
+
+    const { persona, reasoning } = JSON.parse(personaToolCall.function.arguments);
+    console.log('Classified persona:', persona, '- Reasoning:', reasoning);
+
+    // Step 2: Generate research response
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -53,6 +124,9 @@ serve(async (req) => {
 
 Research Paper Content:
 ${RESEARCH_CONTENT}
+
+DETECTED USER PERSONA: ${persona}
+Note: For now, provide the standard research response. Persona-specific customization will be added in the next phase.
 
 IMPORTANT INSTRUCTIONS:
 1. For the SUMMARY section:
@@ -154,6 +228,9 @@ IMPORTANT INSTRUCTIONS:
     }
 
     const result = JSON.parse(toolCall.function.arguments);
+    
+    // Add persona to the result
+    result.persona = persona;
 
     console.log('Query processed successfully');
 

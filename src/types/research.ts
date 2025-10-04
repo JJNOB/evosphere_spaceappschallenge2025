@@ -1,4 +1,7 @@
+export type UserPersona = 'scientist' | 'manager' | 'mission_architect' | 'engineering' | 'academia';
+
 export interface ResearchResult {
+  persona: UserPersona;
   summary: string;
   keyFindings: string;
   contradictions: string;
