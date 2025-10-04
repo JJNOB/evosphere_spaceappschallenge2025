@@ -214,9 +214,6 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
                 </div>
                 {result ? (
                   <>
-                    <div className={styles.prose}>
-                      <ReactMarkdown>{result.sourcesAndDataAccess}</ReactMarkdown>
-                    </div>
                     {hasResults && (
                       <div className={styles.sourcesList}>
                         {result.sources.map((source, i) => (
