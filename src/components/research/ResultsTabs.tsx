@@ -1,8 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, TrendingUp, BarChart3, Download, Wrench } from "lucide-react";
+import { FileText, TrendingUp, BarChart3, Download } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { ResearchResult } from "@/types/research";
 import styles from './ResultsTabs.module.css';
@@ -13,13 +12,6 @@ interface ResultsTabsProps {
 
 export const ResultsTabs = ({ result }: ResultsTabsProps) => {
   const hasResults = result && result.sources.length > 0;
-
-  // Determine which tabs to show based on available content
-  const hasFindings = result?.keyFindings;
-  const hasUncertainties = result?.uncertaintiesAndConflicts;
-  const hasTechnology = result?.technologyAndOperationalImplications;
-  const hasLimitations = result?.technologyLimitations;
-  const hasEngineering = result?.engineeringAndSystemsIntegration;
 
   const handleDownloadCSV = () => {
     if (!result) return;
@@ -45,38 +37,20 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
           <TabsTrigger value="summary" className={styles.tabTrigger}>
             Summary
           </TabsTrigger>
-          {hasFindings && (
-            <TabsTrigger 
-              value="findings" 
-              className={styles.tabTrigger}
-            >
-              Key Findings
-            </TabsTrigger>
-          )}
-          {hasUncertainties && (
-            <TabsTrigger 
-              value="uncertainties" 
-              className={styles.tabTrigger}
-            >
-              Uncertainties
-            </TabsTrigger>
-          )}
-          {hasTechnology && (
-            <TabsTrigger 
-              value="technology" 
-              className={styles.tabTrigger}
-            >
-              Technology
-            </TabsTrigger>
-          )}
-          {hasLimitations && (
-            <TabsTrigger 
-              value="limitations" 
-              className={styles.tabTrigger}
-            >
-              Limitations
-            </TabsTrigger>
-          )}
+          <TabsTrigger 
+            value="insights" 
+            disabled={!hasResults}
+            className={styles.tabTrigger}
+          >
+            Insights
+          </TabsTrigger>
+          <TabsTrigger 
+            value="gaps" 
+            disabled={!hasResults}
+            className={styles.tabTrigger}
+          >
+            Knowledge Gaps
+          </TabsTrigger>
           <TabsTrigger 
             value="sources" 
             disabled={!hasResults}
@@ -84,14 +58,6 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
           >
             Sources
           </TabsTrigger>
-          {hasEngineering && (
-            <TabsTrigger 
-              value="engineering" 
-              className={styles.tabTrigger}
-            >
-              Engineering
-            </TabsTrigger>
-          )}
         </TabsList>
         
         <TabsContent value="summary" className={styles.tabContent}>
@@ -102,7 +68,7 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
               </div>
               <div className={styles.content}>
                 <h3 className={styles.heading}>
-                  {hasResults ? "General Scope" : "No Information Found"}
+                  {hasResults ? "General Summary" : "No Information Found"}
                 </h3>
                 {result ? (
                   <div className={styles.prose}>
@@ -111,7 +77,7 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
                 ) : (
                   <p className={styles.placeholder}>
                     Enter a query above to get AI-powered summaries of NASA bioscience research. 
-                    Our system analyzes publications to provide comprehensive insights 
+                    Our system analyzes hundreds of publications to provide comprehensive insights 
                     into space biology experiments and their implications for human exploration.
                   </p>
                 )}
@@ -120,77 +86,53 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
           </Card>
         </TabsContent>
         
-        {hasFindings && (
-          <TabsContent value="findings" className={styles.tabContent}>
-            <Card className={styles.card}>
-              <div className={styles.cardInner}>
-                <div className={`${styles.icon} ${styles.iconSuccess}`}>
-                  <TrendingUp className={styles.iconSize} />
-                </div>
-                <div className={styles.content}>
-                  <h3 className={styles.heading}>Key Findings & Conclusions</h3>
+        <TabsContent value="insights" className={styles.tabContent}>
+          <Card className={styles.card}>
+            <div className={styles.cardInner}>
+              <div className={`${styles.icon} ${styles.iconSuccess}`}>
+                <TrendingUp className={styles.iconSize} />
+              </div>
+              <div className={styles.content}>
+                <h3 className={styles.heading}>Key Findings</h3>
+                {result ? (
                   <div className={styles.prose}>
                     <ReactMarkdown>{result.keyFindings}</ReactMarkdown>
                   </div>
-                </div>
+                ) : (
+                  <p className={styles.placeholder}>
+                    Discover breakthrough findings, consensus areas, and conflicting results across 
+                    different studies. Understand trends and progress in space biology research.
+                  </p>
+                )}
               </div>
-            </Card>
-          </TabsContent>
-        )}
+            </div>
+          </Card>
+        </TabsContent>
         
-        {hasUncertainties && (
-          <TabsContent value="uncertainties" className={styles.tabContent}>
-            <Card className={styles.card}>
-              <div className={styles.cardInner}>
-                <div className={`${styles.icon} ${styles.iconWarning}`}>
-                  <BarChart3 className={styles.iconSize} />
-                </div>
-                <div className={styles.content}>
-                  <h3 className={styles.heading}>Uncertainties & Conflicts</h3>
-                  <div className={styles.prose}>
-                    <ReactMarkdown>{result.uncertaintiesAndConflicts!}</ReactMarkdown>
-                  </div>
-                </div>
+        <TabsContent value="gaps" className={styles.tabContent}>
+          <Card className={styles.card}>
+            <div className={styles.cardInner}>
+              <div className={`${styles.icon} ${styles.iconWarning}`}>
+                <BarChart3 className={styles.iconSize} />
               </div>
-            </Card>
-          </TabsContent>
-        )}
-        
-        {hasTechnology && (
-          <TabsContent value="technology" className={styles.tabContent}>
-            <Card className={styles.card}>
-              <div className={styles.cardInner}>
-                <div className={`${styles.icon} ${styles.iconInfo}`}>
-                  <Wrench className={styles.iconSize} />
-                </div>
-                <div className={styles.content}>
-                  <h3 className={styles.heading}>Technology & Operational Implications</h3>
+              <div className={styles.content}>
+                <h3 className={styles.heading}>Contradictions & Debates</h3>
+                {result ? (
                   <div className={styles.prose}>
-                    <ReactMarkdown>{result.technologyAndOperationalImplications!}</ReactMarkdown>
+                    <ReactMarkdown>
+                      {result.contradictions || "No significant contradictions or debates identified in the current research."}
+                    </ReactMarkdown>
                   </div>
-                </div>
+                ) : (
+                  <p className={styles.placeholder}>
+                    Identify unexplored areas and research opportunities. Find where additional 
+                    studies are needed to support future Moon and Mars missions.
+                  </p>
+                )}
               </div>
-            </Card>
-          </TabsContent>
-        )}
-        
-        {hasLimitations && (
-          <TabsContent value="limitations" className={styles.tabContent}>
-            <Card className={styles.card}>
-              <div className={styles.cardInner}>
-                <div className={`${styles.icon} ${styles.iconWarning}`}>
-                  <BarChart3 className={styles.iconSize} />
-                </div>
-                <div className={styles.content}>
-                  <h3 className={styles.heading}>Technology Limitations</h3>
-                  <div className={styles.prose}>
-                    <ReactMarkdown>{result.technologyLimitations!}</ReactMarkdown>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </TabsContent>
-        )}
+            </div>
+          </Card>
+        </TabsContent>
         
         <TabsContent value="sources" className={styles.tabContent}>
           <Card className={styles.card}>
@@ -200,7 +142,7 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
               </div>
               <div className={styles.content}>
                 <div className={styles.sourcesHeader}>
-                  <h3 className={styles.heading}>Sources & Data Access</h3>
+                  <h3 className={styles.heading}>Referenced Sources</h3>
                   {hasResults && (
                     <Button
                       onClick={handleDownloadCSV}
@@ -212,58 +154,36 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
                     </Button>
                   )}
                 </div>
-                {result ? (
-                  <>
-                    {hasResults && (
-                      <div className={styles.sourcesList}>
-                        {result.sources.map((source, i) => (
-                          <div key={i} className={styles.sourceItem}>
-                            <div className={styles.sourceHeader}>
-                              <h4 className={styles.sourceTitle}>{source.title}</h4>
-                              <span className={styles.sourceAuthors}>
-                                {source.authors} ({source.year})
-                              </span>
-                            </div>
-                            <a 
-                              href={source.url} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className={styles.sourceLink}
-                            >
-                              {source.url}
-                            </a>
-                          </div>
-                        ))}
+                {hasResults ? (
+                  <div className={styles.sourcesList}>
+                    {result.sources.map((source, i) => (
+                      <div key={i} className={styles.sourceItem}>
+                        <div className={styles.sourceHeader}>
+                          <h4 className={styles.sourceTitle}>{source.title}</h4>
+                          <span className={styles.sourceAuthors}>
+                            {source.authors} ({source.year})
+                          </span>
+                        </div>
+                        <a 
+                          href={source.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className={styles.sourceLink}
+                        >
+                          {source.url}
+                        </a>
                       </div>
-                    )}
-                  </>
+                    ))}
+                  </div>
                 ) : (
                   <p className={styles.placeholder}>
-                    View core papers, datasets, and links to primary data sources.
+                    Enter a query above to see the list of relevant research papers and publications.
                   </p>
                 )}
               </div>
             </div>
           </Card>
         </TabsContent>
-
-        {hasEngineering && (
-          <TabsContent value="engineering" className={styles.tabContent}>
-            <Card className={styles.card}>
-              <div className={styles.cardInner}>
-                <div className={`${styles.icon} ${styles.iconSuccess}`}>
-                  <Wrench className={styles.iconSize} />
-                </div>
-                <div className={styles.content}>
-                  <h3 className={styles.heading}>Engineering & Systems Integration</h3>
-                  <div className={styles.prose}>
-                    <ReactMarkdown>{result.engineeringAndSystemsIntegration!}</ReactMarkdown>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </TabsContent>
-        )}
       </Tabs>
     </section>
   );

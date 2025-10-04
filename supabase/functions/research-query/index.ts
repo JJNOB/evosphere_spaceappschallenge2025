@@ -38,7 +38,6 @@ serve(async (req) => {
 
     console.log('Processing query:', query);
 
-    // Generate research response
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -55,96 +54,25 @@ serve(async (req) => {
 Research Paper Content:
 ${RESEARCH_CONTENT}
 
-CRITICAL INSTRUCTIONS - QUERY-ADAPTIVE RESPONSE:
+IMPORTANT INSTRUCTIONS:
+1. For the SUMMARY section:
+   - If analyzing 1-2 papers: Cite the author(s) ONCE at the beginning (e.g., "Smith et al. (2013) investigated..."), then present findings without repeated citations
+   - If analyzing 3+ papers: Write in academic literature review style with inline citations throughout (e.g., "Smith et al. demonstrated that...", "According to Johnson and Lee...")
+   - Focus ONLY on the most important and significant findings
+   - Be concise - prioritize quality over quantity
+   - Use proper academic tone and structure
 
-Analyze the query intent and populate sections according to these rules:
+2. For KEY FINDINGS:
+   - List the 3-5 most critical discoveries
+   - For 1-2 papers: No need to cite repeatedly
+   - For 3+ papers: Include author citations to distinguish sources
+   - Use bullet points with brief explanations
 
-**ALWAYS REQUIRED:**
-- SUMMARY (General Scope)
-- SOURCES & DATA ACCESS
+3. For CONTRADICTIONS:
+   - Only mention significant debates or conflicting results between studies
+   - Always cite the authors of conflicting studies
 
-**DECISION RULES BY QUERY TYPE:**
-
-1. **Research Queries** (asking about studies, findings, experiments, biological effects):
-   - Include: KEY FINDINGS / CONCLUSIONS
-   - Include: TECHNOLOGY & OPERATIONAL IMPLICATIONS
-   - Include: TECHNOLOGY LIMITATIONS
-   - Include: UNCERTAINTIES & CONFLICTS (if comprehensive understanding needed)
-
-2. **Technology Queries** (asking about hardware, systems, TRL, countermeasures, operations):
-   - Include: TECHNOLOGY & OPERATIONAL IMPLICATIONS
-   - Include: TECHNOLOGY LIMITATIONS
-   - Include: ENGINEERING & SYSTEMS INTEGRATION (if asking about requirements, specs, integration)
-
-3. **Gap/Uncertainty Queries** (asking about unknowns, conflicts, what's missing, open questions):
-   - Include: UNCERTAINTIES & CONFLICTS
-   - Include: KEY FINDINGS (for context on what IS known)
-
-4. **Engineering/Requirements Queries** (asking about requirements, interfaces, specifications, systems):
-   - Include: ENGINEERING & SYSTEMS INTEGRATION
-   - Include: TECHNOLOGY & OPERATIONAL IMPLICATIONS
-   - Include: TECHNOLOGY LIMITATIONS
-
-**General Principle:** Be precise and comprehensive for the query's intent. Don't include sections that don't add value to answering the specific question.
-
-Available sections:
-
-1. **SUMMARY (General Scope)** - ALWAYS REQUIRED - Set context and overview:
-   - WHY IT MATTERS: Relevance to Moon/Mars exploration and long-duration spaceflight
-   - RESEARCH LANDSCAPE: Number and types of studies (human, animal, plant, microbe)
-   - PLATFORMS & METHODS: ISS, Space Shuttle, biosatellites, ground analogs, parabolic flights
-   - TIMELINE & MATURITY: Timeframe of research and level of scientific maturity/consensus
-   - KEY RISKS & SYSTEMS: Biological systems affected and primary risks identified
-   Source: Introduction + Abstract
-
-2. **KEY FINDINGS / CONCLUSIONS** - OPTIONAL - Include only if query asks about results/findings:
-   - 3-7 findings with quantitative data when possible
-   - Mechanisms and pathways discovered
-   - Validated countermeasures or tested solutions
-   - Include representative references
-   Source: Results + Conclusions
-
-3. **UNCERTAINTIES & CONFLICTS** - OPTIONAL - Include only if query asks about gaps/conflicts/unknowns:
-   - Conflicting results between studies
-   - Reasons for conflicts (species differences, duration, hardware variations)
-   - Data shortages and areas with low confidence
-   - Open questions requiring further research
-   Source: Discussion + Conclusions
-
-4. **TECHNOLOGY & OPERATIONAL IMPLICATIONS** - OPTIONAL - Include only if query asks about tech/operations/TRL/missions:
-   - Existing flight and ground hardware used
-   - Environmental conditions studied
-   - Countermeasures and their Technology Readiness Level (TRL)
-   - Operational impacts on missions
-   Source: Conclusions + Methods
-
-5. **TECHNOLOGY LIMITATIONS** - OPTIONAL - Include only if query asks about limitations/constraints/problems:
-   - Hardware and environment constraints
-   - Sample handling and data collection issues
-   - Scalability and integration gaps
-   - Maintainability concerns
-   Source: Methods + Discussion
-
-6. **SOURCES & DATA ACCESS** - ALWAYS REQUIRED - List only:
-   - Paper title
-   - Authors
-   - Direct link/URL to the paper
-   Source: References + Metadata
-
-7. **ENGINEERING & SYSTEMS INTEGRATION** - OPTIONAL - Include only if query asks for engineering/integration requirements:
-   - Derived requirements with "shall/should" statements
-   - Interface and environment envelopes (mass, power, thermal, vibration, radiation)
-   - Architecture option trades
-   - Risk register items
-   - Verification & Validation plans
-   Source: Methods + Results + Hardware appendices
-
-CRITICAL: If the query is NOT related to the research content available, you MUST return this EXACT message in the summary field:
-"The relevant information to process your query could not be found in the current database"
-
-For all other fields when no information is found, return: "No relevant information available in the current database."
-
-When information IS found, provide detailed responses as instructed above.`
+4. If the query is NOT related to the research content, indicate that no relevant information was found and suggest what topics ARE covered in the database.`
           },
           {
             role: "user",
@@ -154,58 +82,42 @@ When information IS found, provide detailed responses as instructed above.`
         tools: [
           {
             type: "function",
-              function: {
-                name: "structure_research_response",
-                description: "Structure the research response with all required sections in markdown format",
-                parameters: {
-                  type: "object",
-                  properties: {
-                    summary: {
-                      type: "string",
-                      description: "General scope covering: relevance to Moon/Mars, research landscape, platforms, timeline & maturity, key systems & risks. If no relevant information found, use the exact message specified in the system prompt."
-                    },
-                    keyFindings: {
-                      type: "string",
-                      description: "3-7 main proven results with quantitative data, mechanisms, countermeasures, and references"
-                    },
-                    uncertaintiesAndConflicts: {
-                      type: "string",
-                      description: "Gaps, disagreements, conflicting results, reasons for conflicts, data shortages, open questions"
-                    },
-                    technologyAndOperationalImplications: {
-                      type: "string",
-                      description: "Flight/ground hardware, environmental conditions, countermeasures with TRL, operational impacts"
-                    },
-                    technologyLimitations: {
-                      type: "string",
-                      description: "Hardware constraints, sample handling issues, scalability gaps, maintainability concerns"
-                    },
-                    sourcesAndDataAccess: {
-                      type: "string",
-                      description: "Core papers, datasets (OSDR, NASA Task Book), grant info, citations with links"
-                    },
-                    engineeringAndSystemsIntegration: {
-                      type: "string",
-                      description: "OPTIONAL: Derived requirements (shall/should), interface envelopes (mass/power/thermal/vibration/radiation), architecture trades, risk register, V&V plans. Only include if query asks for engineering/integration details."
-                    },
-                    sources: {
-                      type: "array",
-                      items: {
-                        type: "object",
-                        properties: {
-                          title: { type: "string", description: "Title of the research paper" },
-                          url: { type: "string", description: "URL or DOI of the paper" },
-                          authors: { type: "string", description: "Authors in format 'FirstAuthor et al.' if multiple authors" },
-                          year: { type: "string", description: "Publication year" }
-                        },
-                        required: ["title", "url", "authors", "year"]
-                      },
-                      description: "List of relevant research papers cited"
-                    }
+            function: {
+              name: "structure_research_response",
+              description: "Structure the research response with clear sections in markdown format",
+              parameters: {
+                type: "object",
+                properties: {
+                  summary: {
+                    type: "string",
+                    description: "Academic-style summary. For 1-2 papers: cite author(s) once at start, then present findings. For 3+ papers: use inline citations throughout. Focus on most important findings only."
                   },
-                  required: ["summary", "sourcesAndDataAccess", "sources"]
-                }
+                  keyFindings: {
+                    type: "string",
+                    description: "3-5 most critical discoveries in bullet points. Only include citations if multiple papers are involved."
+                  },
+                  contradictions: {
+                    type: "string",
+                    description: "Contradictions or debates in the research community in markdown format, or empty string if none applicable"
+                  },
+                  sources: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        title: { type: "string", description: "Title of the research paper" },
+                        url: { type: "string", description: "URL or DOI of the paper" },
+                        authors: { type: "string", description: "Authors in format 'FirstAuthor et al.' if multiple authors" },
+                        year: { type: "string", description: "Publication year" }
+                      },
+                      required: ["title", "url", "authors", "year"]
+                    },
+                    description: "List of relevant research papers cited with authors and publication year"
+                  }
+                },
+                required: ["summary", "keyFindings", "contradictions", "sources"]
               }
+            }
           }
         ],
         tool_choice: { type: "function", function: { name: "structure_research_response" } }
