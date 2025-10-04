@@ -56,20 +56,21 @@ ${RESEARCH_CONTENT}
 
 IMPORTANT INSTRUCTIONS:
 1. For the SUMMARY section:
-   - Write it in an academic introduction style, similar to a literature review
-   - ALWAYS cite authors when mentioning findings (e.g., "Smith et al. demonstrated that...", "According to Johnson and Lee...")
+   - If analyzing 1-2 papers: Cite the author(s) ONCE at the beginning (e.g., "Smith et al. (2013) investigated..."), then present findings without repeated citations
+   - If analyzing 3+ papers: Write in academic literature review style with inline citations throughout (e.g., "Smith et al. demonstrated that...", "According to Johnson and Lee...")
    - Focus ONLY on the most important and significant findings
-   - Be concise - prioritize quality over quantity of information
-   - If multiple papers cover the same topic, synthesize them into cohesive paragraphs rather than listing everything
+   - Be concise - prioritize quality over quantity
    - Use proper academic tone and structure
 
 2. For KEY FINDINGS:
-   - List the 3-5 most critical discoveries with author citations
+   - List the 3-5 most critical discoveries
+   - For 1-2 papers: No need to cite repeatedly
+   - For 3+ papers: Include author citations to distinguish sources
    - Use bullet points with brief explanations
 
 3. For CONTRADICTIONS:
    - Only mention significant debates or conflicting results between studies
-   - Cite the authors of conflicting studies
+   - Always cite the authors of conflicting studies
 
 4. If the query is NOT related to the research content, indicate that no relevant information was found and suggest what topics ARE covered in the database.`
           },
@@ -89,11 +90,11 @@ IMPORTANT INSTRUCTIONS:
                 properties: {
                   summary: {
                     type: "string",
-                    description: "Write an academic-style introduction paragraph that synthesizes the research. MUST cite authors (e.g., 'Smith et al. found that...'). Focus on the most important findings only. Be concise."
+                    description: "Academic-style summary. For 1-2 papers: cite author(s) once at start, then present findings. For 3+ papers: use inline citations throughout. Focus on most important findings only."
                   },
                   keyFindings: {
                     type: "string",
-                    description: "List 3-5 most critical discoveries in bullet points with author citations. Use markdown format."
+                    description: "3-5 most critical discoveries in bullet points. Only include citations if multiple papers are involved."
                   },
                   contradictions: {
                     type: "string",
