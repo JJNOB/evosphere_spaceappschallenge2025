@@ -164,35 +164,6 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Stats Section */}
-      <section className="max-w-7xl mx-auto px-4 mb-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {stats.map((stat, i) => (
-            <Card key={i} className="glass p-6 hover:border-primary/50 transition group">
-              <stat.icon className="w-8 h-8 text-primary mb-3 group-hover:scale-110 transition" />
-              <div className="text-3xl font-bold text-gradient mb-1">{stat.value}</div>
-              <div className="text-sm text-muted-foreground">{stat.label}</div>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* Research Categories */}
-      <section className="max-w-7xl mx-auto px-4 mb-16">
-        <h2 className="text-3xl font-bold mb-8 text-center">Research Categories</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {researchCategories.map((category, i) => (
-            <Card key={i} className="glass p-6 hover:border-primary/50 transition cursor-pointer group">
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${category.color} flex items-center justify-center mb-4 group-hover:scale-110 transition`}>
-                <category.icon className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">{category.name}</h3>
-              <p className="text-muted-foreground">{category.count} publications</p>
-            </Card>
-          ))}
-        </div>
-      </section>
-
       {/* Results Tabs */}
       <section className="max-w-7xl mx-auto px-4 mb-16">
         <Tabs defaultValue="summary" className="w-full">
@@ -334,6 +305,36 @@ const Index = () => {
             </Card>
           </TabsContent>
         </Tabs>
+      </section>
+
+      {/* Stats Section */}
+      <section className="max-w-7xl mx-auto px-4 mb-16">
+        <h2 className="text-2xl font-bold mb-6 text-center">Database Overview</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {stats.map((stat, i) => (
+            <Card key={i} className="glass p-6 hover:border-primary/50 transition group">
+              <stat.icon className="w-8 h-8 text-primary mb-3 group-hover:scale-110 transition" />
+              <div className="text-3xl font-bold text-gradient mb-1">{stat.value}</div>
+              <div className="text-sm text-muted-foreground">{stat.label}</div>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Research Categories */}
+      <section className="max-w-7xl mx-auto px-4 mb-16">
+        <h2 className="text-3xl font-bold mb-8 text-center">Research Categories</h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {researchCategories.map((category, i) => (
+            <Card key={i} className="glass p-6 hover:border-primary/50 transition cursor-pointer group">
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${category.color} flex items-center justify-center mb-4 group-hover:scale-110 transition`}>
+                <category.icon className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">{category.name}</h3>
+              <p className="text-muted-foreground">{category.count} publications</p>
+            </Card>
+          ))}
+        </div>
       </section>
     </div>
   );

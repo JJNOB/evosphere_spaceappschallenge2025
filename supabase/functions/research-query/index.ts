@@ -54,7 +54,7 @@ serve(async (req) => {
 Research Paper Content:
 ${RESEARCH_CONTENT}
 
-Provide structured responses based on the actual research content.`
+IMPORTANT: If the user's query is not related to the content of this research paper, you must indicate this by setting all fields to explain that no relevant information was found in the database. Be helpful and suggest what topics ARE covered in the database.`
           },
           {
             role: "user",
