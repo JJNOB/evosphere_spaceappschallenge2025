@@ -53,11 +53,10 @@ serve(async (req) => {
             content: `You are a persona classifier for space biology research queries. 
 Analyze the user's query and classify them into ONE of these personas based on their needs and focus:
 
-- scientist: Looking for detailed biological mechanisms, cellular processes, molecular data
+- scientist: Looking for detailed biological mechanisms, cellular processes, molecular data, research methodology
 - manager: Interested in project outcomes, timelines, resource allocation, team coordination
 - mission_architect: Focused on mission design, requirements, constraints, system integration
 - engineering: Concerned with technical specifications, hardware, measurements, implementation
-- academia: Seeking research methodology, statistical analysis, publication-worthy insights
 
 Return ONLY the persona type.`
           },
@@ -77,7 +76,7 @@ Return ONLY the persona type.`
                 properties: {
                   persona: {
                     type: "string",
-                    enum: ["scientist", "manager", "mission_architect", "engineering", "academia"],
+                    enum: ["scientist", "manager", "mission_architect", "engineering"],
                     description: "The classified user persona"
                   },
                   reasoning: {

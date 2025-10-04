@@ -1,4 +1,4 @@
-export type UserPersona = 'scientist' | 'manager' | 'mission_architect' | 'engineering' | 'academia';
+export type UserPersona = 'scientist' | 'manager' | 'mission_architect' | 'engineering';
 
 export interface ResearchResult {
   persona: UserPersona;

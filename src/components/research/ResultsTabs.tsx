@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, TrendingUp, BarChart3, Download, User, Microscope, Briefcase, Rocket, Wrench, GraduationCap } from "lucide-react";
+import { FileText, TrendingUp, BarChart3, Download, User, Microscope, Briefcase, Rocket, Wrench } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { ResearchResult, UserPersona } from "@/types/research";
 import styles from './ResultsTabs.module.css';
@@ -15,8 +15,7 @@ const personaConfig: Record<UserPersona, { icon: typeof User; label: string; col
   scientist: { icon: Microscope, label: 'Scientist/Biologist', color: 'bg-blue-500' },
   manager: { icon: Briefcase, label: 'Manager', color: 'bg-purple-500' },
   mission_architect: { icon: Rocket, label: 'Mission Architect', color: 'bg-orange-500' },
-  engineering: { icon: Wrench, label: 'Engineering', color: 'bg-green-500' },
-  academia: { icon: GraduationCap, label: 'Academia', color: 'bg-indigo-500' }
+  engineering: { icon: Wrench, label: 'Engineering', color: 'bg-green-500' }
 };
 
 export const ResultsTabs = ({ result }: ResultsTabsProps) => {
