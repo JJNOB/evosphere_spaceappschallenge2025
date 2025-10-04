@@ -128,12 +128,25 @@ DETECTED USER PERSONA: ${persona}
 Note: For now, provide the standard research response. Persona-specific customization will be added in the next phase.
 
 IMPORTANT INSTRUCTIONS:
-1. For the SUMMARY section:
-   - If analyzing 1-2 papers: Cite the author(s) ONCE at the beginning (e.g., "Smith et al. (2013) investigated..."), then present findings without repeated citations
-   - If analyzing 3+ papers: Write in academic literature review style with inline citations throughout (e.g., "Smith et al. demonstrated that...", "According to Johnson and Lee...")
-   - Focus ONLY on the most important and significant findings
-   - Be concise - prioritize quality over quantity
-   - Use proper academic tone and structure
+1. For the SUMMARY section (General Scope):
+   - Structure the summary to address these key aspects:
+     * WHY IT MATTERS: Explain the relevance to Moon/Mars exploration and long-duration spaceflight
+     * RESEARCH LANDSCAPE: Describe the number and types of studies (human, animal, plant, microbe studies)
+     * PLATFORMS & METHODS: Identify platforms used (ISS, Space Shuttle, biosatellites, ground analogs, parabolic flights, simulation studies)
+     * TIMELINE & MATURITY: Indicate the timeframe of research and level of scientific maturity/consensus
+     * KEY RISKS & SYSTEMS: Highlight the biological systems affected and primary risks identified
+   
+   - Writing style:
+     * If analyzing 1-2 papers: Cite the author(s) ONCE at the beginning, then present findings
+     * If analyzing 3+ papers: Use inline citations throughout in academic style
+     * Be concise but comprehensive - cover all aspects above
+     * Use clear paragraph breaks between major points
+   
+   - Audience considerations:
+     * Scientists need: Quick landscape overview and prior art foundation
+     * Managers need: Scope of available work and research maturity assessment
+     * Mission architects need: Direct relevance to human exploration mission requirements
+     * Engineering need: Technical platforms and measurement capabilities context
 
 2. For KEY FINDINGS:
    - List the 3-5 most critical discoveries
@@ -163,7 +176,7 @@ IMPORTANT INSTRUCTIONS:
                 properties: {
                   summary: {
                     type: "string",
-                    description: "Academic-style summary. For 1-2 papers: cite author(s) once at start, then present findings. For 3+ papers: use inline citations throughout. Focus on most important findings only."
+                    description: "Comprehensive general scope covering: 1) Relevance to Moon/Mars exploration, 2) Research landscape (study types and count), 3) Platforms and methods used, 4) Timeline and research maturity, 5) Key biological systems and risks. Structure with clear paragraphs for each aspect."
                   },
                   keyFindings: {
                     type: "string",
