@@ -24,8 +24,8 @@ export function AppSidebar() {
     <>
       <Sidebar className="w-56 border-r border-border bg-card">
         <SidebarHeader className="p-6 border-b border-border">
-          <div className="flex items-center justify-center">
-            <img src={logo} alt="BioSpace-X Logo" className="w-32 h-32 object-contain" />
+          <div className="flex items-center justify-center w-full h-full">
+            <img src={logo} alt="BioSpace-X Logo" className="w-full h-full object-contain" />
           </div>
         </SidebarHeader>
 
