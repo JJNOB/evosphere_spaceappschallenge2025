@@ -240,13 +240,9 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
                   )}
                 </div>
                 {result ? (
-                  <>
-                    <div className={styles.prose}>
-                      <ReactMarkdown>{result.sourcesAndDataAccess}</ReactMarkdown>
-                    </div>
-                    {hasResults && (
-                      <div className={styles.sourcesList}>
-                        {result.sources.map((source, i) => (
+                  hasResults && (
+                    <div className={styles.sourcesList}>
+                      {result.sources.map((source, i) => (
                           <div key={i} className={styles.sourceItem}>
                             <div className={styles.sourceHeader}>
                               <h4 className={styles.sourceTitle}>{source.title}</h4>
@@ -265,8 +261,7 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
                           </div>
                         ))}
                       </div>
-                    )}
-                  </>
+                    )
                 ) : (
                   <p className={styles.placeholder}>
                     View core papers, datasets, and links to primary data sources.
