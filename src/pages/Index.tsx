@@ -4,13 +4,21 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Sparkles, FileText, TrendingUp, Users, Calendar, BarChart3, Loader2 } from "lucide-react";
+import { Search, Sparkles, FileText, TrendingUp, Users, Calendar, BarChart3, Loader2, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import ReactMarkdown from "react-markdown";
+
+interface ResearchResult {
+  summary: string;
+  keyFindings: string;
+  contradictions: string;
+  sources: Array<{ title: string; url: string }>;
+}
 
 const Index = () => {
   const [query, setQuery] = useState("");
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState<ResearchResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -61,7 +69,7 @@ const Index = () => {
         return;
       }
 
-      setResult(data.result);
+      setResult(data.result as ResearchResult);
       toast({
         title: "Query processed",
         description: "Results are ready"
@@ -188,10 +196,11 @@ const Index = () => {
       {/* Results Tabs */}
       <section className="max-w-7xl mx-auto px-4 mb-16">
         <Tabs defaultValue="summary" className="w-full">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 glass">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4 glass">
             <TabsTrigger value="summary">Summary</TabsTrigger>
             <TabsTrigger value="insights">Insights</TabsTrigger>
             <TabsTrigger value="gaps">Knowledge Gaps</TabsTrigger>
+            <TabsTrigger value="sources">Sources</TabsTrigger>
           </TabsList>
           
           <TabsContent value="summary" className="mt-8">
@@ -201,10 +210,10 @@ const Index = () => {
                   <FileText className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-2xl font-bold mb-4">Research Summary</h3>
+                  <h3 className="text-2xl font-bold mb-4">General Summary</h3>
                   {result ? (
-                    <div className="prose prose-invert max-w-none">
-                      <p className="text-foreground leading-relaxed whitespace-pre-wrap">{result}</p>
+                    <div className="prose prose-invert max-w-none text-foreground leading-relaxed">
+                      <ReactMarkdown>{result.summary}</ReactMarkdown>
                     </div>
                   ) : (
                     <p className="text-muted-foreground leading-relaxed">
@@ -225,10 +234,10 @@ const Index = () => {
                   <TrendingUp className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-2xl font-bold mb-4">Key Insights</h3>
+                  <h3 className="text-2xl font-bold mb-4">Key Findings</h3>
                   {result ? (
-                    <div className="prose prose-invert max-w-none">
-                      <p className="text-foreground leading-relaxed whitespace-pre-wrap">{result}</p>
+                    <div className="prose prose-invert max-w-none text-foreground leading-relaxed">
+                      <ReactMarkdown>{result.keyFindings}</ReactMarkdown>
                     </div>
                   ) : (
                     <p className="text-muted-foreground leading-relaxed">
@@ -248,15 +257,76 @@ const Index = () => {
                   <BarChart3 className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-2xl font-bold mb-4">Knowledge Gaps</h3>
+                  <h3 className="text-2xl font-bold mb-4">Contradictions & Debates</h3>
                   {result ? (
-                    <div className="prose prose-invert max-w-none">
-                      <p className="text-foreground leading-relaxed whitespace-pre-wrap">{result}</p>
+                    <div className="prose prose-invert max-w-none text-foreground leading-relaxed">
+                      <ReactMarkdown>
+                        {result.contradictions || "No significant contradictions or debates identified in the current research."}
+                      </ReactMarkdown>
                     </div>
                   ) : (
                     <p className="text-muted-foreground leading-relaxed">
                       Identify unexplored areas and research opportunities. Find where additional 
                       studies are needed to support future Moon and Mars missions.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="sources" className="mt-8">
+            <Card className="glass p-8">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center flex-shrink-0">
+                  <FileText className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-2xl font-bold">Referenced Sources</h3>
+                    {result && result.sources.length > 0 && (
+                      <Button
+                        onClick={() => {
+                          const csv = [
+                            ['Title', 'URL'],
+                            ...result.sources.map(s => [s.title, s.url])
+                          ].map(row => row.join(',')).join('\n');
+                          
+                          const blob = new Blob([csv], { type: 'text/csv' });
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = 'research-sources.csv';
+                          a.click();
+                          URL.revokeObjectURL(url);
+                        }}
+                        className="gap-2"
+                        variant="outline"
+                      >
+                        <Download className="w-4 h-4" />
+                        Download CSV
+                      </Button>
+                    )}
+                  </div>
+                  {result && result.sources.length > 0 ? (
+                    <div className="space-y-3">
+                      {result.sources.map((source, i) => (
+                        <div key={i} className="p-4 glass rounded-lg hover:border-primary/50 transition">
+                          <h4 className="font-semibold text-foreground mb-2">{source.title}</h4>
+                          <a 
+                            href={source.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-primary hover:underline text-sm"
+                          >
+                            {source.url}
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-muted-foreground leading-relaxed">
+                      Enter a query above to see the list of relevant research papers and publications.
                     </p>
                   )}
                 </div>

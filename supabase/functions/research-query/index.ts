@@ -49,21 +49,58 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: `You are a NASA bioscience research assistant. Analyze the following research paper and provide detailed, accurate summaries based on the content. When answering queries, focus on:
-1. Research Summary: Key findings and methodology
-2. Key Insights: Important discoveries and conclusions
-3. Knowledge Gaps: Areas needing further research
+            content: `You are a NASA bioscience research assistant. Analyze the following research paper and provide detailed, accurate summaries in markdown format.
 
 Research Paper Content:
 ${RESEARCH_CONTENT}
 
-Provide structured, detailed responses based on the actual research content.`
+Provide structured responses based on the actual research content.`
           },
           {
             role: "user",
             content: query
           }
         ],
+        tools: [
+          {
+            type: "function",
+            function: {
+              name: "structure_research_response",
+              description: "Structure the research response with clear sections in markdown format",
+              parameters: {
+                type: "object",
+                properties: {
+                  summary: {
+                    type: "string",
+                    description: "General summary of the research in markdown format with key findings and methodology"
+                  },
+                  keyFindings: {
+                    type: "string",
+                    description: "Key findings and important discoveries in markdown format with bullet points"
+                  },
+                  contradictions: {
+                    type: "string",
+                    description: "Contradictions or debates in the research community in markdown format, or empty string if none applicable"
+                  },
+                  sources: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        title: { type: "string", description: "Title of the research paper" },
+                        url: { type: "string", description: "URL or DOI of the paper" }
+                      },
+                      required: ["title", "url"]
+                    },
+                    description: "List of relevant research papers cited"
+                  }
+                },
+                required: ["summary", "keyFindings", "contradictions", "sources"]
+              }
+            }
+          }
+        ],
+        tool_choice: { type: "function", function: { name: "structure_research_response" } }
       }),
     });
 
@@ -89,7 +126,14 @@ Provide structured, detailed responses based on the actual research content.`
     }
 
     const data = await response.json();
-    const result = data.choices[0].message.content;
+    const toolCall = data.choices[0].message.tool_calls?.[0];
+    
+    if (!toolCall) {
+      console.error('No tool call received');
+      throw new Error('No structured response received from AI');
+    }
+
+    const result = JSON.parse(toolCall.function.arguments);
 
     console.log('Query processed successfully');
 
