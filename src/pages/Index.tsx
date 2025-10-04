@@ -52,9 +52,9 @@ const Index = () => {
 
       <ResultsTabs result={result} />
 
-      <StatsSection stats={stats} />
-
       <ResearchCategories categories={researchCategories} />
+
+      <StatsSection stats={stats} />
     </div>
   );
 };

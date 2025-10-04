@@ -31,15 +31,7 @@
   background-color: hsl(var(--background) / 0.1);
   border: 1px solid hsl(var(--border) / 0.2);
   padding: 1.5rem;
-  transition: border-color 0.15s ease-in-out;
-}
-
-.card:hover {
-  border-color: hsl(var(--primary) / 0.5);
-}
-
-.card:hover .icon {
-  transform: scale(1.1);
+  opacity: 0.9;
 }
 
 .icon {
@@ -47,7 +39,6 @@
   height: 2rem;
   color: hsl(var(--primary));
   margin-bottom: 0.75rem;
-  transition: transform 0.15s ease-in-out;
 }
 
 .value {
