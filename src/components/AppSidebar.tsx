@@ -8,6 +8,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
+import logo from "@/assets/spacelogo.png";
 import {
   Dialog,
   DialogContent,
@@ -23,11 +24,8 @@ export function AppSidebar() {
     <>
       <Sidebar className="w-56 border-r border-border bg-card">
         <SidebarHeader className="p-6 border-b border-border">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-sm">
-              <span className="text-primary-foreground font-semibold text-base">R</span>
-            </div>
-            <span className="font-semibold text-base text-foreground">Research AI</span>
+          <div className="flex items-center justify-center">
+            <img src={logo} alt="BioSpace-X Logo" className="w-12 h-12 object-contain" />
           </div>
         </SidebarHeader>
 
