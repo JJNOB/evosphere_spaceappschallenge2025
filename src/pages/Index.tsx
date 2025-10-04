@@ -169,9 +169,27 @@ const Index = () => {
         <Tabs defaultValue="summary" className="w-full">
           <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4 glass">
             <TabsTrigger value="summary">Summary</TabsTrigger>
-            <TabsTrigger value="insights">Insights</TabsTrigger>
-            <TabsTrigger value="gaps">Knowledge Gaps</TabsTrigger>
-            <TabsTrigger value="sources">Sources</TabsTrigger>
+            <TabsTrigger 
+              value="insights" 
+              disabled={!result || result.sources.length === 0}
+              className="disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Insights
+            </TabsTrigger>
+            <TabsTrigger 
+              value="gaps" 
+              disabled={!result || result.sources.length === 0}
+              className="disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Knowledge Gaps
+            </TabsTrigger>
+            <TabsTrigger 
+              value="sources" 
+              disabled={!result || result.sources.length === 0}
+              className="disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Sources
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="summary" className="mt-8">
