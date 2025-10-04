@@ -21,9 +21,6 @@ const App = () => (
           <div className="flex min-h-screen w-full">
             <AppSidebar />
             <main className="flex-1">
-              <div className="flex justify-center py-4 border-b border-border bg-card/50">
-                <img src={logo} alt="BioSpace-X Logo" className="h-16 object-contain" />
-              </div>
               <Routes>
                 <Route path="/" element={<Index />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
