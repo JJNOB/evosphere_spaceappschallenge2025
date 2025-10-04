@@ -2,34 +2,24 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, TrendingUp, BarChart3, Download, User, Microscope, Briefcase, Rocket, Wrench } from "lucide-react";
+import { FileText, TrendingUp, BarChart3, Download, Wrench } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { ResearchResult, UserPersona } from "@/types/research";
+import { ResearchResult } from "@/types/research";
 import styles from './ResultsTabs.module.css';
 
 interface ResultsTabsProps {
   result: ResearchResult | null;
 }
 
-const personaConfig: Record<UserPersona, { icon: typeof User; label: string; color: string }> = {
-  scientist: { icon: Microscope, label: 'Scientist/Biologist', color: 'bg-blue-500' },
-  manager: { icon: Briefcase, label: 'Manager', color: 'bg-purple-500' },
-  mission_architect: { icon: Rocket, label: 'Mission Architect', color: 'bg-orange-500' },
-  engineering: { icon: Wrench, label: 'Engineering', color: 'bg-green-500' }
-};
-
 export const ResultsTabs = ({ result }: ResultsTabsProps) => {
   const hasResults = result && result.sources.length > 0;
-  const PersonaIcon = result?.persona ? personaConfig[result.persona].icon : User;
-  const personaLabel = result?.persona ? personaConfig[result.persona].label : 'Unknown';
-  const personaColor = result?.persona ? personaConfig[result.persona].color : 'bg-gray-500';
 
   // Determine which tabs to show based on available content
   const hasFindings = result?.keyFindings;
   const hasUncertainties = result?.uncertaintiesAndConflicts;
   const hasTechnology = result?.technologyAndOperationalImplications;
   const hasLimitations = result?.technologyLimitations;
-  const hasEngineering = result?.persona === 'engineering' && result?.engineeringAndSystemsIntegration;
+  const hasEngineering = result?.engineeringAndSystemsIntegration;
 
   const handleDownloadCSV = () => {
     if (!result) return;
@@ -50,15 +40,6 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
 
   return (
     <section className={styles.section}>
-      {result?.persona && (
-        <div className="flex items-center gap-2 mb-6 p-4 bg-muted/50 rounded-lg border border-border">
-          <PersonaIcon className="w-5 h-5" />
-          <span className="text-sm font-medium">Detected Profile:</span>
-          <Badge className={`${personaColor} text-white`}>
-            {personaLabel}
-          </Badge>
-        </div>
-      )}
       <Tabs defaultValue="summary" className={styles.tabs}>
         <TabsList className={styles.tabsList}>
           <TabsTrigger value="summary" className={styles.tabTrigger}>

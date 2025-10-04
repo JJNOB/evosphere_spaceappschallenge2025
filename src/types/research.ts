@@ -1,7 +1,4 @@
-export type UserPersona = 'scientist' | 'manager' | 'mission_architect' | 'engineering';
-
 export interface ResearchResult {
-  persona: UserPersona;
   summary: string; // Always required
   keyFindings?: string; // Optional - only if relevant to query
   uncertaintiesAndConflicts?: string; // Optional - only if relevant to query

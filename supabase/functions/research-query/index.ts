@@ -38,76 +38,7 @@ serve(async (req) => {
 
     console.log('Processing query:', query);
 
-    // Step 1: Classify user persona
-    const personaResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          {
-            role: "system",
-            content: `You are a persona classifier for space biology research queries. 
-Analyze the user's query and classify them into ONE of these personas based on their needs and focus:
-
-- scientist: Looking for detailed biological mechanisms, cellular processes, molecular data, research methodology
-- manager: Interested in project outcomes, timelines, resource allocation, team coordination
-- mission_architect: Focused on mission design, requirements, constraints, system integration
-- engineering: Concerned with technical specifications, hardware, measurements, implementation
-
-Return ONLY the persona type.`
-          },
-          {
-            role: "user",
-            content: query
-          }
-        ],
-        tools: [
-          {
-            type: "function",
-            function: {
-              name: "classify_persona",
-              description: "Classify the user into one of the predefined personas",
-              parameters: {
-                type: "object",
-                properties: {
-                  persona: {
-                    type: "string",
-                    enum: ["scientist", "manager", "mission_architect", "engineering"],
-                    description: "The classified user persona"
-                  },
-                  reasoning: {
-                    type: "string",
-                    description: "Brief explanation of why this persona was chosen"
-                  }
-                },
-                required: ["persona", "reasoning"]
-              }
-            }
-          }
-        ],
-        tool_choice: { type: "function", function: { name: "classify_persona" } }
-      }),
-    });
-
-    if (!personaResponse.ok) {
-      throw new Error(`Persona classification failed: ${personaResponse.status}`);
-    }
-
-    const personaData = await personaResponse.json();
-    const personaToolCall = personaData.choices[0].message.tool_calls?.[0];
-    
-    if (!personaToolCall) {
-      throw new Error('No persona classification received');
-    }
-
-    const { persona, reasoning } = JSON.parse(personaToolCall.function.arguments);
-    console.log('Classified persona:', persona, '- Reasoning:', reasoning);
-
-    // Step 2: Generate research response
+    // Generate research response
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -123,8 +54,6 @@ Return ONLY the persona type.`
 
 Research Paper Content:
 ${RESEARCH_CONTENT}
-
-DETECTED USER PERSONA: ${persona}
 
 CRITICAL INSTRUCTIONS - QUERY-ADAPTIVE RESPONSE:
 Analyze the query and ONLY populate sections that are DIRECTLY RELEVANT to answering it.
@@ -176,23 +105,15 @@ Available sections:
    - Available datasets (OSDR, NASA Task Book, SLS Library)
    - Grant information when available
    - Links to primary data sources
-   Source: References + Metadata
+    Source: References + Metadata
 
-${persona === 'engineering' ? `
-7. **ENGINEERING & SYSTEMS INTEGRATION** - Actionable requirements (ENGINEER-SPECIFIC):
+7. **ENGINEERING & SYSTEMS INTEGRATION** - OPTIONAL - Include only if query asks for engineering/integration requirements:
    - Derived requirements with "shall/should" statements
    - Interface and environment envelopes (mass, power, thermal, vibration, radiation)
    - Architecture option trades
    - Risk register items
    - Verification & Validation plans
    Source: Methods + Results + Hardware appendices
-` : ''}
-
-AUDIENCE-SPECIFIC EMPHASIS for ${persona}:
-${persona === 'scientist' ? '- Focus on: evidence base, prior art, experimental conditions, data quality, hypothesis generation areas' : ''}
-${persona === 'manager' ? '- Focus on: scope maturity, funding gaps, proven vs emerging tech, investment opportunities, TRL levels' : ''}
-${persona === 'mission_architect' ? '- Focus on: exploration relevance, risk models, habitat/vehicle/ECLSS implications, safety constraints' : ''}
-${persona === 'engineering' ? '- Focus on: hardware specs, design targets, integration constraints, test reports, V&V approaches, derived requirements' : ''}
 
 CRITICAL: If the query is NOT related to the research content available, you MUST return this EXACT message in the summary field:
 "The relevant information to process your query could not be found in the current database"
@@ -241,7 +162,7 @@ When information IS found, provide detailed responses as instructed above.`
                     },
                     engineeringAndSystemsIntegration: {
                       type: "string",
-                      description: "ONLY for engineering persona: Derived requirements (shall/should), interface envelopes (mass/power/thermal/vibration/radiation), architecture trades, risk register, V&V plans"
+                      description: "OPTIONAL: Derived requirements (shall/should), interface envelopes (mass/power/thermal/vibration/radiation), architecture trades, risk register, V&V plans. Only include if query asks for engineering/integration details."
                     },
                     sources: {
                       type: "array",
@@ -297,9 +218,6 @@ When information IS found, provide detailed responses as instructed above.`
     }
 
     const result = JSON.parse(toolCall.function.arguments);
-    
-    // Add persona to the result
-    result.persona = persona;
 
     console.log('Query processed successfully');
 
