@@ -59,6 +59,13 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
             Technology
           </TabsTrigger>
           <TabsTrigger 
+            value="specifications" 
+            disabled={!hasResults}
+            className={styles.tabTrigger}
+          >
+            Specifications
+          </TabsTrigger>
+          <TabsTrigger 
             value="limitations" 
             disabled={!hasResults}
             className={styles.tabTrigger}
@@ -71,13 +78,6 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
             className={styles.tabTrigger}
           >
             Sources
-          </TabsTrigger>
-          <TabsTrigger 
-            value="engineering" 
-            disabled={!hasResults}
-            className={styles.tabTrigger}
-          >
-            Engineering
           </TabsTrigger>
         </TabsList>
         
@@ -175,6 +175,28 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
           </Card>
         </TabsContent>
         
+        <TabsContent value="specifications" className={styles.tabContent}>
+          <Card className={styles.card}>
+            <div className={styles.cardInner}>
+              <div className={`${styles.icon} ${styles.iconSuccess}`}>
+                <Wrench className={styles.iconSize} />
+              </div>
+              <div className={styles.content}>
+                <h3 className={styles.heading}>Specifications & Systems Integration</h3>
+                {result ? (
+                  <div className={styles.prose}>
+                    <ReactMarkdown>{result.engineeringAndSystemsIntegration}</ReactMarkdown>
+                  </div>
+                ) : (
+                  <p className={styles.placeholder}>
+                    View derived requirements, interface envelopes, and V&V plans.
+                  </p>
+                )}
+              </div>
+            </div>
+          </Card>
+        </TabsContent>
+        
         <TabsContent value="limitations" className={styles.tabContent}>
           <Card className={styles.card}>
             <div className={styles.cardInner}>
@@ -248,28 +270,6 @@ export const ResultsTabs = ({ result }: ResultsTabsProps) => {
                 ) : (
                   <p className={styles.placeholder}>
                     View core papers, datasets, and links to primary data sources.
-                  </p>
-                )}
-              </div>
-            </div>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="engineering" className={styles.tabContent}>
-          <Card className={styles.card}>
-            <div className={styles.cardInner}>
-              <div className={`${styles.icon} ${styles.iconSuccess}`}>
-                <Wrench className={styles.iconSize} />
-              </div>
-              <div className={styles.content}>
-                <h3 className={styles.heading}>Engineering & Systems Integration</h3>
-                {result ? (
-                  <div className={styles.prose}>
-                    <ReactMarkdown>{result.engineeringAndSystemsIntegration}</ReactMarkdown>
-                  </div>
-                ) : (
-                  <p className={styles.placeholder}>
-                    View derived requirements, interface envelopes, and V&V plans.
                   </p>
                 )}
               </div>
