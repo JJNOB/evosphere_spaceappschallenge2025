@@ -12,7 +12,7 @@ import styles from "./Index.module.css";
 const exampleQueries = [
   "Ethical space exploration",
   "immune system in space",
-  "Aging in space"
+  "Aging effects in space environment"
 ];
 
 const researchCategories: ResearchCategory[] = [
