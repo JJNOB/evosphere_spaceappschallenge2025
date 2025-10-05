@@ -251,7 +251,7 @@ Return ONLY the structured result using the provided tool.`
                 },
                 technologyAndOperationalImplications: { 
                   type: "string", 
-                  description: "Technology implications with citations, TRL levels, operational constraints, concrete specifications for engineers or practical applications for other fields" 
+                  description: "HIGH-LEVEL technology and operational implications with citations. Overview of potential applications, TRL context, and operational considerations. Focus on strategic/conceptual level rather than detailed specifications." 
                 },
                 technologyLimitations: { 
                   type: "string", 
@@ -259,7 +259,7 @@ Return ONLY the structured result using the provided tool.`
                 },
                 engineeringAndSystemsIntegration: { 
                   type: "string", 
-                  description: "Engineering requirements with citations, system integration challenges, technical specifications relevant to implementation" 
+                  description: "DETAILED specifications and systems integration for engineers with citations. Concrete technical specifications, dimensions, masses, power requirements, material properties, integration challenges, design constraints - all information needed to actually design and build the technology. Lower-level implementation details." 
                 },
                 sourcesAndDataAccess: { 
                   type: "string", 
