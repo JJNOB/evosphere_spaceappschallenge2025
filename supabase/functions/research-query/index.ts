@@ -5,22 +5,41 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Research paper content from Bion-M 1 Space Mission study
+// Research papers database
 const RESEARCH_CONTENT = `
-Title: Mice in Bion-M 1 Space Mission: Training and Selection
+=== PAPER 1: FAIRness and Usability for Open-access Omics Data Systems ===
+Authors: Daniel C. Berrios, Afshin Beheshti, Sylvain V. Costes
+Institution: NASA Ames Research Center
+Abstract: Omics data sharing is crucial to biological research. We assessed the "FAIRness" of NASA's GeneLab Data Systems (GLDS) along with four similar systems using 14 FAIRness metrics. Systems performed best in data findability and accessibility, worst in data interoperability. GeneLab is a NASA initiative for open science biomedical research supporting human space exploration and life on Earth. The GLDS manages genomics, transcriptomics, proteomics, and metabolomics data from space biology research.
 
-Abstract:
-After a 16-year hiatus, Russia has resumed its program of biomedical research in space, with the successful 30-day flight of the Bion-M 1 biosatellite (April 19–May 19, 2013). The principal species for biomedical research in this project was the mouse. This paper presents an overview of the scientific goals, the experimental design and the mouse training/selection program. The aim of mice experiments in the Bion-M 1 project was to elucidate cellular and molecular mechanisms, underlying the adaptation of key physiological systems to long-term exposure in microgravity. The studies with mice combined in vivo measurements, both in flight and post-flight (including continuous blood pressure measurement), with extensive in vitro studies carried out shortly after return of the mice and in the end of recovery study. Male C57/BL6 mice group housed in space habitats were flown aboard the Bion-M 1 biosatellite, or remained on ground in the control experiment that replicated environmental and housing conditions in the spacecraft. Vivarium control groups were used to account for housing effects and possible seasonal differences. Mice training included the co-adaptation in housing groups and mice adaptation to paste food diet. The measures taken to co-adapt aggressive male mice in housing groups and the peculiarities of ''space'' paste food are described. The training program for mice designated for in vivo studies was broader and included behavioral/functional test battery and continuous behavioral measurements in the home-cage. The results of the preliminary tests were used for the selection of homogenous groups. After the flight, mice were in good condition for biomedical studies and displayed signs of pronounced disadaptation to Earth's gravity. The outcomes of the training program for the mice welfare are discussed. We conclude that our training program was effective and that male mice can be successfully employed in space biomedical research.
+=== PAPER 2: Selective Proliferation of Highly Functional Adipose-Derived Stem Cells in Microgravity ===
+Authors: Takanobu Mashiko, Koji Kanayama, Natsumi Saito, et al.
+Abstract: Microgravity conditions combined with microspheres in stirred suspension preserved stemness in human adipose-derived stem cells (hASCs). One-week cultures using polystyrene and collagen microspheres increased proportions of SSEA-3(+) hASCs 4.4- and 4.3-fold compared to normal conditions. These cultured hASCs expressed higher levels of pluripotent markers (OCT4, SOX2, NANOG, MYC, KLF) and had improved abilities for proliferation, colony formation, and multiple-mesenchymal differentiation. This novel culturing method may enhance regenerative therapies.
 
-Key Research Areas:
-- Space biology and microgravity effects
-- Mouse physiology in space
-- Adaptation mechanisms
+=== PAPER 3: Cell Type-Specific Calcium Signaling in Arabidopsis Roots Using GCaMP3 ===
+Authors: William Krogman, J. Alan Sparks, Elison B. Blancaflor
+Institution: Noble Research Institute LLC
+Abstract: Cytoplasmic calcium [Ca2+]cyt is a second messenger in plant cells responding to environmental stimuli. We developed Arabidopsis lines expressing GCaMP3 in five root cell types (columella, endodermis, cortex, epidermis, trichoblasts). Found similarities and differences in [Ca2+]cyt signatures when exposed to ATP, glutamate, aluminum, and salt. These lines enable in-depth studies linking environmental stimuli to root developmental pathways via [Ca2+]cyt.
+
+=== PAPER 4: Brassinosteroids Inhibit Autotropic Root Straightening ===
+Authors: Louise de Bang, Ana Paez-Garcia, Ashley E. Cannon, et al.
+Institution: Noble Research Institute LLC
+Abstract: Brassinosteroids affect root gravitropism through effects on filamentous-actin (F-actin). Epi-brassinolide (eBL) and latrunculin B (LatB) both enhanced downward growth and inhibited autotropism (root straightening). eBL reduced F-actin density and modified organization in living roots. Live cell imaging revealed decreased global F-actin dynamics in hypocotyls treated with eBL. eBL-induced enhancement of root gravitropism can be explained by inhibited autotropic root straightening through modifying F-actin organization and dynamics.
+
+=== PAPER 5: MscL Channel/Nanovalve Pore Size Modulation ===
+Authors: Li-Min Yang, Robin Wray, Juandell Parker, et al.
+Institution: University of Texas Medical Center
+Abstract: MscL is a bacterial mechanosensitive channel protecting cells from osmotic lysis. It's a well-characterized mechanosensor serving as paradigm for how molecules sense and respond to stimuli. Can be genetically modified and used as triggered nanovalve for sensors in microelectronic arrays and vesicular drug release. Three routes throttle open channel conductance: shortening linker between TM2 and cytoplasmic bundle, constraining by cross-linking, or heavy metal coordination. These routes provide engineering options for MscL sensors in nanotech devices.
+
+Key Research Areas Covered:
+- Space biology and omics data systems
+- Microgravity effects on stem cells
+- Plant biology and calcium signaling
+- Root development and gravitropism
+- Mechanobiology and nanovalves
+- Regenerative medicine in space
+- Plant adaptation to stress
 - Biomedical research protocols
-- Cardiovascular responses
-- Muscle atrophy
-- Bone density changes
-- Cellular and molecular mechanisms
 `;
 
 serve(async (req) => {
