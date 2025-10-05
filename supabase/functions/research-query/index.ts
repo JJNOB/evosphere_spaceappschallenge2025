@@ -195,10 +195,32 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: `You are a space biology research assistant. Analyze the provided research papers and answer user queries comprehensively.
+            content: `You are EVOSPHERE - an advanced space biology research assistant analyzing NASA publications and scientific papers. Your mission is to bridge space research with practical applications across multiple domains.
+
+CORE PRINCIPLES:
+1. **Always cite sources**: Every statement must reference the specific article(s) it comes from. Use inline citations like (Authors et al., Year) throughout your response.
+
+2. **Role-adaptive communication**: Tailor language and focus based on the user's professional needs:
+   - For ENGINEERS: Focus on technical specifications, implementation details, system requirements, operational constraints, TRL levels, and concrete numbers (dimensions, masses, power requirements, etc.)
+   - For SCIENTISTS: Emphasize research methodology, statistical significance, sample sizes, experimental design, p-values, and research implications
+   - For GENERAL/OTHER ROLES: Balance technical detail with accessibility, focusing on practical implications
+
+3. **Cross-domain applications**: Space research has applications beyond space exploration (medicine, materials science, agriculture, biotechnology, etc.). If a query is about a non-space topic, actively identify how the available space research data can contribute valuable insights to that field.
 
 Research Database:
 ${RESEARCH_CONTENT}
+
+RESPONSE REQUIREMENTS:
+- Begin key points with citations: "Research shows X (Smith et al., 2023)"
+- Include specific data: percentages, durations, measurements, statistical values
+- For engineers: Emphasize system integration, operational parameters, technical constraints
+- For scientists: Highlight experimental methods, sample characteristics, statistical robustness
+- Connect findings across papers when relevant
+- Explicitly note practical implications for the user's domain
+- If space data can inform non-space applications, draw those connections clearly
+- In sourcesAndDataAccess, list ALL cited papers with full DOIs
+
+Example citation style: "Microgravity exposure leads to 1-2% bone loss per month (Smith et al., 2023), with thymic atrophy reaching 56.6% of normal weight (Jones et al., 2024)."
 
 Return ONLY the structured result using the provided tool.`
           },
@@ -211,17 +233,38 @@ Return ONLY the structured result using the provided tool.`
           type: "function",
           function: {
             name: "format_research_result",
-            description: "Format the research query results in a structured way",
+            description: "Format the research query results in a structured way with inline citations",
             parameters: {
               type: "object",
               properties: {
-                summary: { type: "string", description: "Brief overview of relevant research (2-3 paragraphs)" },
-                keyFindings: { type: "string", description: "Bullet points of key findings in markdown format" },
-                uncertaintiesAndConflicts: { type: "string", description: "Known uncertainties or conflicting data in markdown" },
-                technologyAndOperationalImplications: { type: "string", description: "Technology implications and operational considerations in markdown" },
-                technologyLimitations: { type: "string", description: "Current technology limitations in markdown" },
-                engineeringAndSystemsIntegration: { type: "string", description: "Engineering and systems requirements in markdown" },
-                sourcesAndDataAccess: { type: "string", description: "Citations and data sources in markdown with DOIs" },
+                summary: { 
+                  type: "string", 
+                  description: "Brief overview with inline citations (Author et al., Year). Tailor language to user role (engineer: technical specs; scientist: methodology). 2-3 paragraphs." 
+                },
+                keyFindings: { 
+                  type: "string", 
+                  description: "Bullet points with citations and specific numbers/data. Format: '- Finding description (Author et al., Year): specific data'" 
+                },
+                uncertaintiesAndConflicts: { 
+                  type: "string", 
+                  description: "Known uncertainties with citations. Note data gaps and conflicting results." 
+                },
+                technologyAndOperationalImplications: { 
+                  type: "string", 
+                  description: "Technology implications with citations, TRL levels, operational constraints, concrete specifications for engineers or practical applications for other fields" 
+                },
+                technologyLimitations: { 
+                  type: "string", 
+                  description: "Current limitations with citations and specific constraints/numbers" 
+                },
+                engineeringAndSystemsIntegration: { 
+                  type: "string", 
+                  description: "Engineering requirements with citations, system integration challenges, technical specifications relevant to implementation" 
+                },
+                sourcesAndDataAccess: { 
+                  type: "string", 
+                  description: "Full citations with DOIs for ALL papers referenced. Format each as: 'Title (Authors, Year). DOI: [link]'" 
+                },
                 sources: { 
                   type: "array", 
                   items: {
@@ -232,10 +275,10 @@ Return ONLY the structured result using the provided tool.`
                       url: { type: "string" }
                     }
                   },
-                  description: "Array of source documents"
+                  description: "Array of ALL cited source documents with full metadata"
                 }
               },
-              required: ["summary", "keyFindings", "sources"]
+              required: ["summary", "keyFindings", "sources", "sourcesAndDataAccess"]
             }
           }
         }],
