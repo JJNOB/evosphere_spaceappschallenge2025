@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/68143e3b-bfa6-42e2-924f-5a5779e831ac
+**URL**: [evosphere.lova](https://evosphere.lovable.app/)
 
 ## How can I edit this code?
 
