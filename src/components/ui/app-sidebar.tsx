@@ -8,7 +8,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-import logo from "@/assets/spacelogo.png";
+import logo from "@/assets/evosphere-logo.png";
 import {
   Dialog,
   DialogContent,
@@ -25,7 +25,7 @@ export function AppSidebar() {
       <Sidebar className="w-56 border-r border-border bg-card">
         <SidebarHeader className="p-6 border-b border-border">
           <div className="flex items-center justify-center w-full h-full">
-            <img src={logo} alt="BioSpace-X Logo" className="w-full h-full object-contain" />
+            <img src={logo} alt="EVOSPHERE Logo" className="w-full h-full object-contain" />
           </div>
         </SidebarHeader>
 
