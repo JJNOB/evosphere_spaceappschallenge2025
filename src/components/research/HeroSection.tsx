@@ -29,7 +29,7 @@ export const HeroSection = ({
           <span className={styles.titleText}>Research Explorer</span>
         </h1>
         
-        <p className={styles.description}>Explore NASA bioscience publications with AI-powered insights. Search through research papers and get instant AI-generated summaries and analysis.</p>
+        <p className={styles.description}>Explore NASA bioscience publications with AI-powered insights - from discovery to deployment, see key findings, tech readiness, and open challenges.</p>
 
         <div className={styles.searchContainer}>
           <SearchBar value={query} onChange={setQuery} onSearch={onSearch} isLoading={isLoading} />
