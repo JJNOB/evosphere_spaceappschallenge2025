@@ -24,7 +24,7 @@ const researchCategories: ResearchCategory[] = [
 
 const stats: StatItem[] = [
   { label: "Total Publications", value: "608", icon: FileText },
-  { label: "Research Areas", value: "12", icon: BarChart3 },
+  { label: "Research Areas", value: "10+", icon: BarChart3 },
   { label: "Years Covered", value: "30+", icon: Calendar },
   { label: "Active Studies", value: "89", icon: TrendingUp }
 ];
