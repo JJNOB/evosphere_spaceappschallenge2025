@@ -12,7 +12,7 @@ import styles from "./Index.module.css";
 const exampleQueries = [
   "Ethical space exploration",
   "immune system in space",
-  "Aging effects in space environment"
+  "Design specifications for an automated cell analysis system to measure telomere length and DNA methylation patterns in astronauts for human lifespan extension research"
 ];
 
 const researchCategories: ResearchCategory[] = [
