@@ -10,10 +10,9 @@ import { StatItem, ResearchCategory } from "@/types/research";
 import styles from "./Index.module.css";
 
 const exampleQueries = [
-  "Effects of microgravity on bone density",
-  "Plant growth in space conditions",
-  "Radiation impact on human cells",
-  "Muscle atrophy during long-term missions"
+  "Ethical space exploration",
+  "immune system in space",
+  "Aging in space"
 ];
 
 const researchCategories: ResearchCategory[] = [
